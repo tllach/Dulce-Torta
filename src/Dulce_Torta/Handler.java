@@ -11,9 +11,8 @@ public class Handler {
         this.display = display;
     }
 
-    public Display getDisplay() { return display;}
-
-
-
+    public Display getDisplay() {
+        return display;
+    }
 
 }
