@@ -1,10 +1,10 @@
 package Dulce_Torta;
 
-import Dulce_Torta.GUI.InicioSesionGUI;
-import Dulce_Torta.GUI.PantallaPrincipalGUI;
+import Dulce_Torta.GUI.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class Display implements Runnable {
 
@@ -19,6 +19,11 @@ public class Display implements Runnable {
 
     public InicioSesionGUI inicioSesionGUI;
     public PantallaPrincipalGUI pantallaPrincipalGUI;
+    public RegistroPrincipalGUI registroPrincipalGUI;
+    public RegistroCompletado registroCompletado;
+    public Orden orden;
+    public OrdenEmpleado ordenEmpleado;
+    public RestablecerCnsñ restablecerCnsñ;
 
     public Display(int width, int height){
         this.width = width;
@@ -35,6 +40,10 @@ public class Display implements Runnable {
         handler = new Handler(this);
         inicioSesionGUI = new InicioSesionGUI(handler,width, height);
         pantallaPrincipalGUI = new PantallaPrincipalGUI(handler, width, height);
+        registroPrincipalGUI = new RegistroPrincipalGUI(handler, width, height);
+        registroCompletado = new RegistroCompletado(handler, width, height);
+        orden = new Orden(handler, width, height);
+
     }
 
     private void initComponents(){
