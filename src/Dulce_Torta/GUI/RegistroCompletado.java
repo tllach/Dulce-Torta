@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 public class RegistroCompletado extends GUI{
+
     JButton btnVolverInicio;
     String bg;
+
     public RegistroCompletado(Handler handler, int width, int height) { super(handler, width, height);}
 
     @Override
@@ -27,8 +29,6 @@ public class RegistroCompletado extends GUI{
     }
     @Override
     public void actionPerformed(ActionEvent e){
-        if(e.getSource()==btnVolverInicio){
-            handler.getDisplay().changeJPanel(new JPanel(), bg);
-        }
+
     }
 }

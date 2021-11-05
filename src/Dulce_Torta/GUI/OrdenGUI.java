@@ -3,7 +3,7 @@ import Dulce_Torta.Handler;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class Orden extends GUI {
+public class OrdenGUI extends GUI {
     JTextField txtNombreCliente;
     JTextField txtDireccionCliente;
     JComboBox Productos;
@@ -15,7 +15,7 @@ public class Orden extends GUI {
     JButton btnCrearOrden;
     String bg;
 
-    public Orden(Handler handler, int width, int height) {
+    public OrdenGUI(Handler handler, int width, int height) {
         super(handler, width, height);
     }
 
@@ -62,8 +62,6 @@ public class Orden extends GUI {
     }
     @Override
     public void actionPerformed(ActionEvent e){
-        if(e.getSource()==btnBack){
-            handler.getDisplay().changeJPanel(new JPanel(), bg);
-        }
+
     }
 }

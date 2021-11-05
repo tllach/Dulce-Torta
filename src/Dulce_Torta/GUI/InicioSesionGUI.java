@@ -5,13 +5,15 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class InicioSesionGUI extends GUI{
+
     JTextField txtUsuario;
-    JPasswordField txtContraseña;
+    JPasswordField txtCtr;
+
     JButton btnInicioSesion;
-    JButton rsbContraseña;
-    JButton btnGoRegistro;
-    JButton btnBack;
-    String bg;
+    JButton btnRsbCtr;
+
+    String bgPrincipal;
+    String bgRestablecerC;
 
     public InicioSesionGUI(Handler handler, int width, int height){
         super(handler, width, height);
@@ -20,12 +22,11 @@ public class InicioSesionGUI extends GUI{
     @Override
     protected void declaration() {
         txtUsuario = new JTextField();
-        txtContraseña = new JPasswordField();
+        txtCtr = new JPasswordField();
         btnInicioSesion = new JButton();
-        rsbContraseña = new JButton();
-        btnGoRegistro = new JButton();
-        btnBack = new JButton();
-        bg = "src/Dulce_Torta/Assets/ImgInicioSesion.png";
+        btnRsbCtr = new JButton();
+        bgPrincipal = "src/Dulce_Torta/Assets/pantallaPrincipal.png";
+        bgRestablecerC = "src/Dulce_Torta/Assets/ImgRestablecerC.png";
     }
 
     @Override
@@ -35,30 +36,30 @@ public class InicioSesionGUI extends GUI{
          setSize(width, height);
          setLocation(0,0);
 
-         txtUsuario.setBounds(360, 250, 350, 50);
-         txtContraseña.setBounds(360, 410, 350, 50);
-         btnInicioSesion.setBounds(400, 540, 220, 80);
-         rsbContraseña.setBounds(370, 490, 280, 30);
-         btnGoRegistro.setBounds(590, 643, 100, 30);
-         btnBack.setBounds(70, 540, 90, 90);
-
+         txtUsuario.setBounds(368, 235, 355, 50);
+         txtCtr.setBounds(368, 398, 355, 50);
+         btnInicioSesion.setBounds(395, 543, 210, 80);
+         btnRsbCtr.setBounds(360, 486, 280, 25);
 
          txtUsuario.addActionListener(this);
-         txtContraseña.addActionListener(this);
+         txtCtr.addActionListener(this);
          btnInicioSesion.addActionListener(this);
-         rsbContraseña.addActionListener(this);
-         btnGoRegistro.addActionListener(this);
-         btnBack.addActionListener(this);
+         btnRsbCtr.addActionListener(this);
 
-         addToJPanel(btnInicioSesion, rsbContraseña,btnGoRegistro,btnBack);
-         buttonTransparent(btnInicioSesion, rsbContraseña, btnGoRegistro, btnBack);
+         addToJPanel(btnInicioSesion, btnRsbCtr, txtUsuario, txtCtr);
+         buttonTransparent(btnInicioSesion, btnRsbCtr);
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == btnRsbCtr){
+            handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel,handler.getDisplay().restablecerCntaGUI);
+            handler.getDisplay().changeBackGroundPanel(bgRestablecerC);
+        }
         if(e.getSource() == btnInicioSesion){
-            handler.getDisplay().changeJPanel(new JPanel(), bg);
+            handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel, handler.getDisplay().pantallaPrincipalGUI);
+            handler.getDisplay().changeBackGroundPanel(bgPrincipal);
         }
     }
 }

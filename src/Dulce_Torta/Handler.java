@@ -1,13 +1,12 @@
 package Dulce_Torta;
 
-
-import Dulce_Torta.GUI.PantallaPrincipalGUI;
+import Dulce_Torta.Actors.Enums.TipoDocumento;
 
 public class Handler {
 
     private Display display;
 
-    public Handler(Display display){
+    public Handler(Display display) {
         this.display = display;
     }
 
@@ -15,4 +14,7 @@ public class Handler {
         return display;
     }
 
+    public TipoDocumento getTipoDocumento(){
+       return display.tipoDoc;
+    }
 }
