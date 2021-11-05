@@ -11,7 +11,7 @@ JTextField txtNumDoc;
 JTextField txtDireccion;
 JComboBox tipoCargo;
 JTextField txtCelular;
-JPasswordField txtContraseñaR;
+JPasswordField txtCrtR;
 JButton btnBack;
 JButton btnRegistrar;
 String bg;
@@ -29,10 +29,10 @@ String bg;
         txtDireccion = new JTextField();
         tipoCargo = new JComboBox();
         txtCelular = new JTextField();
-        txtContraseñaR = new JPasswordField();
+        txtCrtR = new JPasswordField();
         btnBack = new JButton();
         btnRegistrar = new JButton();
-        bg = "src/Dulce_Torta/Assets/ImgRegistroP.png";
+        bg = "src/Dulce_Torta/Assets/.png";
     }
     @Override
     protected void initComponents(){
@@ -48,7 +48,7 @@ String bg;
         txtDireccion.setBounds(240, 360, 230, 30);
         tipoCargo.setBounds(630, 360, 160, 30);
         txtCelular.setBounds(200, 420, 220, 30);
-        txtContraseñaR.setBounds(270, 490, 250, 30);
+        txtCrtR.setBounds(270, 490, 250, 30);
         btnBack.setBounds(40, 570, 100, 90);
         btnRegistrar.setBounds(710, 580, 260, 80);
 
@@ -59,17 +59,17 @@ String bg;
         txtDireccion.addActionListener(this);
         tipoCargo.addActionListener(this);
         txtCelular.addActionListener(this);
-        txtContraseñaR.addActionListener(this);
+        txtCrtR.addActionListener(this);
         btnBack.addActionListener(this);
         btnRegistrar.addActionListener(this);
 
-        addToJPanel(txtNombres, txtApellidos, tipoDoc, txtNumDoc, txtDireccion, tipoCargo, txtCelular, txtContraseñaR, btnBack, btnRegistrar);
+        addToJPanel(txtNombres, txtApellidos, tipoDoc, txtNumDoc, txtDireccion, tipoCargo, txtCelular, txtCrtR, btnBack, btnRegistrar);
         buttonTransparent(btnBack, btnRegistrar);
     }
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getSource()== btnBack){
-
+            System.out.println("btn back clicked");
         }
     }
 }

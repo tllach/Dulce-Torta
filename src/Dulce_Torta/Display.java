@@ -1,10 +1,13 @@
 package Dulce_Torta;
 
+import Dulce_Torta.Actors.Cliente;
+import Dulce_Torta.Actors.Enums.TipoDocumento;
+import Dulce_Torta.Databases.DataBaseManager;
 import Dulce_Torta.GUI.*;
+import Dulce_Torta.GUI.GUIP.ClientesGUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class Display implements Runnable {
 
@@ -13,17 +16,28 @@ public class Display implements Runnable {
     private JLabel lblBackground;
 
     private JPanel backGroundPanel;
-    private int width, height;
-    private Handler handler;
+    public JPanel lastJPanel;
+    public JPanel lastJPanelInMain;
 
+    private int width, height;
+
+    private Handler handler;
+    private Manager manager;
 
     public InicioSesionGUI inicioSesionGUI;
     public PantallaPrincipalGUI pantallaPrincipalGUI;
     public RegistroPrincipalGUI registroPrincipalGUI;
     public RegistroCompletado registroCompletado;
-    public Orden orden;
+    public OrdenGUI ordenGUI;
     public OrdenEmpleado ordenEmpleado;
-    public RestablecerCnsñ restablecerCnsñ;
+
+    public ClientesGUI clientesGUI;
+
+    public RestablecerCntaGUI restablecerCntaGUI;
+    public AnuncioRestablecer anuncioRestablecer;
+
+    public DataBaseManager dataBaseManager;
+    public TipoDocumento tipoDoc;
 
     public Display(int width, int height){
         this.width = width;
@@ -34,16 +48,31 @@ public class Display implements Runnable {
     }
 
     private void declaration(){
+
+        frame.setIconImage(new ImageIcon("src/Dulce_Torta/Assets/Logo.png").getImage());
+
         backGroundPanel = new JPanel();
         lblBackground = new JLabel();
         content = new JLayeredPane();
         handler = new Handler(this);
+
+        manager = new Manager();
         inicioSesionGUI = new InicioSesionGUI(handler,width, height);
         pantallaPrincipalGUI = new PantallaPrincipalGUI(handler, width, height);
         registroPrincipalGUI = new RegistroPrincipalGUI(handler, width, height);
         registroCompletado = new RegistroCompletado(handler, width, height);
-        orden = new Orden(handler, width, height);
+        restablecerCntaGUI = new RestablecerCntaGUI(handler, width, height);
+        ordenGUI = new OrdenGUI(handler, width, height);
+        anuncioRestablecer = new AnuncioRestablecer(handler, width, height);
 
+        clientesGUI = new ClientesGUI(handler, 1000,530);
+
+        dataBaseManager = new DataBaseManager();
+        dataBaseManager = new DataBaseManager();
+        lastJPanel = inicioSesionGUI;
+        lastJPanelInMain = new JPanel();
+        lastJPanelInMain.setOpaque(false);
+        lastJPanelInMain.setBounds(0,0,1,1);
     }
 
     private void initComponents(){
@@ -58,18 +87,27 @@ public class Display implements Runnable {
 
         content.setLayout(new OverlayLayout(content));
 
-        content.add(backGroundPanel, JLayeredPane.DEFAULT_LAYER);
-        content.add(inicioSesionGUI, JLayeredPane.PALETTE_LAYER);
+        content.add(backGroundPanel, JLayeredPane.DEFAULT_LAYER,-1);
+        content.add(inicioSesionGUI, JLayeredPane.PALETTE_LAYER,2);
         backGroundPanel.setLayout(new BorderLayout());
         backGroundPanel.add(lblBackground);
-        backGroundPanel.setBackground(Color.BLACK);
+        backGroundPanel.setBackground(Color.DARK_GRAY);
         lblBackground.setIcon(new ImageIcon("src/Dulce_Torta/Assets/ImgInicioSesion.png"));
-        lblBackground.setBounds(0,500,-1,-1);
+        lblBackground.setBounds(0,0,-1,-1);
     }
 
-    public void changeJPanel(JPanel panel, String urlBg){
-        content.removeAll();
-        content.add(panel, JLayeredPane.PALETTE_LAYER);
+    public void changeJPanel(JPanel lastJPanel, JPanel panel){
+        this.lastJPanel = panel;
+        content.remove(lastJPanel);
+        content.add(panel, JLayeredPane.PALETTE_LAYER, 2);
+        content.add(lastJPanelInMain, JLayeredPane.PALETTE_LAYER,1);
+        content.revalidate();
+        content.repaint();
+    }
+
+    public void addJpanelToMain(JLayeredPane panel){
+        content.remove(1);
+        content.add(panel, JLayeredPane.PALETTE_LAYER, 1);
         content.revalidate();
         content.repaint();
     }
@@ -78,7 +116,22 @@ public class Display implements Runnable {
         lblBackground.setIcon(new ImageIcon(url));
     }
 
-    protected JFrame getFrame(){return frame;}
+    public void addCliente(String nombre, String apellidos, String tipoDoc, long nroDocumento, String direccion, long celular, String correo){
+        Cliente cliente = new Cliente(handler);
+        cliente.setNombre(nombre);
+        cliente.setApellidos(apellidos);
+        cliente.setTipoDoc(tipoDoc);
+        cliente.setNroDoc(nroDocumento);
+        cliente.setDireccion(direccion);
+        cliente.setCelular(celular);
+        cliente.setCorreo(correo);
+        manager.addCliente(cliente);
+        dataBaseManager.addRegistroCliente(cliente);
+    }
+
+    public JFrame getFrame(){
+        return frame;
+    }
 
     @Override
     public void run() {

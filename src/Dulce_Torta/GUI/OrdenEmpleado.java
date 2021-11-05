@@ -4,7 +4,7 @@ import Dulce_Torta.Handler;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public abstract class OrdenEmpleado extends GUI{
+public class OrdenEmpleado extends GUI{
     String bg;
     public OrdenEmpleado(Handler handler, int width, int height) {super(handler, width, height);}
     @Override
