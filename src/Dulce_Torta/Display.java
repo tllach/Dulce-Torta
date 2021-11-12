@@ -4,7 +4,8 @@ import Dulce_Torta.Actors.Cliente;
 import Dulce_Torta.Actors.Enums.TipoDocumento;
 import Dulce_Torta.Databases.DataBaseManager;
 import Dulce_Torta.GUI.*;
-import Dulce_Torta.GUI.GUIP.ClientesGUI;
+import Dulce_Torta.GUI.GUIP.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,10 +29,9 @@ public class Display implements Runnable {
     public PantallaPrincipalGUI pantallaPrincipalGUI;
     public RegistroPrincipalGUI registroPrincipalGUI;
     public RegistroCompletado registroCompletado;
-    public OrdenGUI ordenGUI;
-    public OrdenEmpleado ordenEmpleado;
 
     public ClientesGUI clientesGUI;
+    public OrdenGUI ordenGUI;
 
     public RestablecerCntaGUI restablecerCntaGUI;
     public AnuncioRestablecer anuncioRestablecer;
@@ -66,6 +66,7 @@ public class Display implements Runnable {
         anuncioRestablecer = new AnuncioRestablecer(handler, width, height);
 
         clientesGUI = new ClientesGUI(handler, 1000,530);
+        ordenGUI = new OrdenGUI(handler, 1000, 530);
 
         dataBaseManager = new DataBaseManager();
         dataBaseManager = new DataBaseManager();
@@ -127,6 +128,9 @@ public class Display implements Runnable {
         cliente.setCorreo(correo);
         manager.addCliente(cliente);
         dataBaseManager.addRegistroCliente(cliente);
+    }
+    public void addOrder(){
+
     }
 
     public JFrame getFrame(){

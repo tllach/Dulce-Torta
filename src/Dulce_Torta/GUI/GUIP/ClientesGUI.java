@@ -19,7 +19,6 @@ public class ClientesGUI extends GUIP implements ItemListener {
     JTextField txtIDCliente;
     JTable tableCliente;
     JScrollPane scrollPane;
-
     int IdToSearch;
 
     //variables a usar para agregar un cliente
