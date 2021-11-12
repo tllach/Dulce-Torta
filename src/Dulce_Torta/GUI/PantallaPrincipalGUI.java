@@ -81,6 +81,7 @@ public class PantallaPrincipalGUI extends GUI{
         }
         if(e.getSource() == btnOrdenes){
             System.out.println("Click Orden");
+            handler.getDisplay().addJpanelToMain(handler.getDisplay().ordenGUI);
         }
         if(e.getSource() == btnEmpleados){
             System.out.println("Click Empleados");
