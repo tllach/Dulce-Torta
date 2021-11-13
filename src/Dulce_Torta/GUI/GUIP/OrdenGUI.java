@@ -207,7 +207,6 @@ public class OrdenGUI extends GUIP implements ItemListener {
         if(e.getSource() == btnShowListOrder){
             System.out.println("Click Show List Btn");
             ShowTableOrder();
-            handler.getDisplay().dataBaseManager.showRegistroCliente();
         }
         if(e.getSource() == btnAddOrden){
             System.out.println("Click Agg Cliente Btn");
