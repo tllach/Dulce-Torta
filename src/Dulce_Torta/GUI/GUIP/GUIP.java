@@ -3,11 +3,12 @@ package Dulce_Torta.GUI.GUIP;
 import Dulce_Torta.Handler;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 public abstract class GUIP extends JLayeredPane implements ActionListener {
 
-    protected JLabel lblBackground;
+    protected JLabel lblBackground, lblID;
 
     protected Handler handler;
 
@@ -40,6 +41,22 @@ public abstract class GUIP extends JLayeredPane implements ActionListener {
     protected void txtSetBorder(JTextField ...txts){
         for(JTextField txt: txts){
             txt.setBorder(null);
+        }
+    }
+
+    protected void clearTxtField(JTextField ...txts) {
+        for(JTextField txt: txts) {
+            txt.setText("");
+        }
+    }
+
+    protected void setFontLbl(JLabel ...lbls){
+        for(JLabel lbl: lbls){
+            if(lbl == lblID){
+                lbl.setFont(new Font("Verdana", Font.BOLD, 20));
+                continue;
+            }
+            lbl.setFont(new Font("Verdana", Font.PLAIN, 20));
         }
     }
 
