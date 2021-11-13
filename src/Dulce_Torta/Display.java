@@ -27,8 +27,6 @@ public class Display implements Runnable {
 
     public InicioSesionGUI inicioSesionGUI;
     public PantallaPrincipalGUI pantallaPrincipalGUI;
-    public RegistroPrincipalGUI registroPrincipalGUI;
-    public RegistroCompletado registroCompletado;
 
     public ClientesGUI clientesGUI;
     public OrdenGUI ordenGUI;
@@ -59,8 +57,6 @@ public class Display implements Runnable {
         manager = new Manager();
         inicioSesionGUI = new InicioSesionGUI(handler,width, height);
         pantallaPrincipalGUI = new PantallaPrincipalGUI(handler, width, height);
-        registroPrincipalGUI = new RegistroPrincipalGUI(handler, width, height);
-        registroCompletado = new RegistroCompletado(handler, width, height);
         restablecerCntaGUI = new RestablecerCntaGUI(handler, width, height);
         ordenGUI = new OrdenGUI(handler, width, height);
         anuncioRestablecer = new AnuncioRestablecer(handler, width, height);
