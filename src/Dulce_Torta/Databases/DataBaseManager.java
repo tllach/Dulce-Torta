@@ -1,7 +1,7 @@
 package Dulce_Torta.Databases;
 
 
-import Dulce_Torta.Actors.Cliente;
+import Dulce_Torta.Actors.*;
 import Dulce_Torta.Handler;
 
 import java.sql.PreparedStatement;
@@ -13,6 +13,7 @@ public class DataBaseManager {
 
     Conexion con;
     ResultSet r;
+    PreparedStatement st;
     Handler handler;
     ArrayList<String> infoCliente;
 
@@ -23,7 +24,7 @@ public class DataBaseManager {
 
     public void addRegistroCliente(Cliente cliente){
         try{
-            PreparedStatement st = con.prepareStatement("INSERT INTO Clientes (ID_Cliente, Nombre, Apellidos, Celular, Direccion, TipoDoc, NumDoc, Correo) VALUES (null,? ,? ,? ,? ,? ,? ,?)");
+            st = con.prepareStatement("INSERT INTO Clientes (ID_Cliente, Nombre, Apellidos, Celular, Direccion, TipoDoc, NumDoc, Correo) VALUES (null,? ,? ,? ,? ,? ,? ,?)");
             st.setString(1, cliente.getNombre());
             st.setString(2, cliente.getApellidos());
             st.setLong(3, cliente.getCelular());
@@ -37,26 +38,45 @@ public class DataBaseManager {
         }
     }
 
-    //para cuando se inicice el progrmaa enseguida se llene el Hasmap de clientes
+    public void addRegistroOrden(Orden orden){
+        st = con.prepareStatement("INSERT INTO Ordenes (ID_venta, Estado, ID_Cliente, TipoCelebracion, TipoCombo, EmpleadosEncargados, FechaVenta, ValorTotal, Descripcion, Torta, TortaMediaLibra, Brownie, Cupcake, Cakepops, Galletas) VALUES (null, ?, ?, ?, ?, ?, date('now'), ?, ?, ?, ?, ?, ?, ?, ?)");
+        try {
+            st.setString(1, orden.getEstado());
+            st.setInt(2, orden.getCliente().getID());
+            st.setString(3, orden.getTipoCelebracion());
+            st.setString(4, orden.getTipoCombo());
+            st.setString(5, orden.getEmpleadosEncargadosName());
+            st.setInt(7, orden.getValorTotal());
+            st.setString(8, orden.getDescripcion());
+            int index = 9;
+            for(boolean producto: orden.getProducto()){
+                st.setBoolean(index, producto);
+                index ++;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    //para cuando se inicice el programa se llene el Hashmap de clientes
     public void showAllRegistrosClientes(){
         r = con.resultSet("SELECT * FROM Clientes");
         while(true){
             try {
                 if (!r.next()) break;
-
-                System.out.println("ID: " + r.getString( "ID_Cliente"));
-                System.out.println("Nombre: " +r.getString("Nombre"));
-                System.out.println("Apellidos: " +r.getString("Apellidos"));
-                System.out.println("Direccion: " +r.getString("Direccion"));
-                System.out.println("Celular: " +r.getString("Celular"));
-                System.out.println("TipoDoc: " +r.getString("TipoDoc"));
-                System.out.println("NumDoc: " +r.getString("NumDoc"));
-                System.out.println("Correo: " +r.getString("Correo"));
-
+                Cliente cliente = new Cliente(handler);
+                cliente.setID(Integer.parseInt(r.getString( "ID_Cliente")));
+                cliente.setNombre(r.getString("Nombre"));
+                cliente.setApellidos(r.getString("Apellidos"));
+                cliente.setTipoDoc(r.getString("TipoDoc"));
+                cliente.setNroDoc(Long.parseLong(r.getString("NumDoc")));
+                cliente.setDireccion(r.getString("Direccion"));
+                cliente.setCelular(Long.parseLong(r.getString("Celular")));
+                cliente.setCorreo(r.getString("Correo"));
+                handler.getManager().addCliente(cliente);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-
         }
     }
 
@@ -81,7 +101,7 @@ public class DataBaseManager {
         return infoCliente;
     }
 
-    public void deleteRegistroCliente(){
+    public void deleteRegistroEmpleado(){
         try{
             PreparedStatement st = con.prepareStatement("DELETE FROM Clientes WHERE ID=?");
             st.setInt(1, handler.getDisplay().clientesGUI.getIdToSearch());
@@ -91,16 +111,37 @@ public class DataBaseManager {
         }
     }
 
-    public void addRow(){
-        r = con.resultSet("SELECT * FROM Clientes");
-        Object[] cliente;
+    public void addRow(int opc){
+        Object[] info;
+        String n = switch (opc) {
+            case 1 -> "Clientes";
+            case 2 -> "Empleados";
+            case 3 -> "Insumos";
+            case 4 -> "Ordenes";
+            default -> "";
+        };
+
+        String statement = "SELECT * FROM %s".formatted(n);
+        r = con.resultSet(statement);
+
         while(true){
             try {
                 if (!r.next()) break;
-                cliente = new Object[]{Integer.parseInt(r.getString("ID_Cliente")), r.getString("Nombre"),
-                        r.getString("Apellidos"), r.getString("Direccion"),
-                        Long.parseLong(r.getString("Celular"))};
-                handler.getDisplay().clientesGUI.addRow(cliente);
+                if(opc == 1){
+                    info = new Object[]{Integer.parseInt(r.getString("ID_Cliente")), r.getString("Nombre"),
+                            r.getString("Apellidos"), r.getString("Direccion"),
+                            Long.parseLong(r.getString("Celular"))};
+                    handler.getClientesGUI().addRow(info);
+                }else if(opc == 2){
+                    System.out.println("...");
+                }else if(opc == 3){
+                    System.out.println("...");
+                }else if(opc == 4){
+                    info = new Object[]{r.getString("ID_Venta"), r.getString("Estado"), r.getString("ID_Cliente"),
+                            r.getString("TipoCelebracion"),r.getString("TipoCombo"),
+                            r.getString("EmpleadosEncargados")};
+                    handler.getOrdenGUI().addRow(info);
+                }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Conexion {
 
-    String strConexionDB = "src/Dulce_Torta/Databases/Files/Cliente.s3db";
+    String strConexionDB = "src/Dulce_Torta/Databases/Files/DulceTorta.s3db";
     Connection con = null;
 
     public Conexion() {

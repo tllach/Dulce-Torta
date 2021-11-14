@@ -13,6 +13,7 @@ public class PantallaPrincipalGUI extends GUI{
 
     public PantallaPrincipalGUI(Handler handler, int width, int height){
         super(handler, width, height);
+        handler.getManager().setAllClientes();
     }
 
     @Override
@@ -57,17 +58,16 @@ public class PantallaPrincipalGUI extends GUI{
 
     }
 
-    public JPanel createJPanel(){
+    /**public JPanel createJPanel(){
         JPanel panel = new JPanel();
         panel.setOpaque(true);
         panel.setLocation(0,160);
         panel.setSize(1000,530);
         JLabel label = new JLabel();
         panel.add(label);
-        //label.setIcon(new ImageIcon("src/Dulce_Torta/Assets"));
         label.setBounds(0,0,-1,-1);
         return panel;
-    }
+    }**/
 
     @Override
     public void actionPerformed(ActionEvent e) {

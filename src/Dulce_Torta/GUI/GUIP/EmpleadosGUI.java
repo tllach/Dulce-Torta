@@ -7,15 +7,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class ClientesGUI extends GUIP implements ItemListener {
+public class EmpleadosGUI extends GUIP implements ItemListener {
 
     //variables a usar al principio
     JButton btnShowList, btnAddClienteMenu;
 
     //variables a usar en el panel "lista clientes"
-    JButton btnSearchCliente;
-    JTextField txtIDCliente;
-    JTable tableCliente;
+    JButton btnSearchEmpleado;
+    JTextField txtIDEmpleado;
+    JTable tableEmpleado;
     DefaultTableModel modelTable;
     JScrollPane scrollPane;
     int IdToSearch;
@@ -32,7 +32,7 @@ public class ClientesGUI extends GUIP implements ItemListener {
     JButton btnAtrasCliente2;
     ArrayList<String> infoCliente;
 
-    public ClientesGUI(Handler handler, int width, int height) {
+    public EmpleadosGUI(Handler handler, int width, int height) {
         super(handler, width, height);
     }
 
@@ -69,27 +69,27 @@ public class ClientesGUI extends GUIP implements ItemListener {
     public void showTablaCliente(){
         removeAll();
         //declaration
-        btnSearchCliente = new JButton();
+        btnSearchEmpleado = new JButton();
         btnAtrasCliente = new JButton();
-        txtIDCliente = new JTextField();
-        tableCliente = new JTable();
-        scrollPane = new JScrollPane(tableCliente);
+        txtIDEmpleado = new JTextField();
+        tableEmpleado = new JTable();
+        scrollPane = new JScrollPane(tableEmpleado);
 
         //initComponets
         urlBackground = "src/Dulce_Torta/Assets/Lista.png";
         lblBackground.setIcon(new ImageIcon(urlBackground));
 
-        btnSearchCliente.setBounds(897, positionY + 20, 50,54);
-        txtIDCliente.setBounds(706, positionY + 24, 188,47);
+        btnSearchEmpleado.setBounds(897, positionY + 20, 50,54);
+        txtIDEmpleado.setBounds(706, positionY + 24, 188,47);
         btnAtrasCliente.setBounds(positionX + 53, positionY + 17, 80,80);
 
-        txtIDCliente.addActionListener(this);
-        btnSearchCliente.addActionListener(this);
+        txtIDEmpleado.addActionListener(this);
+        btnSearchEmpleado.addActionListener(this);
         btnAtrasCliente.addActionListener(this);
 
-        addToJPanel(lblBackground, btnSearchCliente, txtIDCliente, btnAtrasCliente);
-        buttonTransparent(btnSearchCliente, btnAtrasCliente);
-        txtSetBorder(txtIDCliente);
+        addToJPanel(lblBackground, btnSearchEmpleado, txtIDEmpleado, btnAtrasCliente);
+        buttonTransparent(btnSearchEmpleado, btnAtrasCliente);
+        txtSetBorder(txtIDEmpleado);
 
         createTable();
     }
@@ -110,19 +110,19 @@ public class ClientesGUI extends GUIP implements ItemListener {
 
         };
 
-        tableCliente.setModel(modelTable);
-        tableCliente.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        tableEmpleado.setModel(modelTable);
+        tableEmpleado.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
                 tableClienteMouseClicked(evt);
             }
         });
 
-        if(tableCliente.getColumnModel().getColumnCount() > 0){
-            tableCliente.getColumnModel().getColumn(0).setResizable(false);
-            tableCliente.getColumnModel().getColumn(1).setResizable(false);
-            tableCliente.getColumnModel().getColumn(2).setResizable(false);
-            tableCliente.getColumnModel().getColumn(3).setResizable(false);
-            tableCliente.getColumnModel().getColumn(4).setResizable(false);
+        if(tableEmpleado.getColumnModel().getColumnCount() > 0){
+            tableEmpleado.getColumnModel().getColumn(0).setResizable(false);
+            tableEmpleado.getColumnModel().getColumn(1).setResizable(false);
+            tableEmpleado.getColumnModel().getColumn(2).setResizable(false);
+            tableEmpleado.getColumnModel().getColumn(3).setResizable(false);
+            tableEmpleado.getColumnModel().getColumn(4).setResizable(false);
         }
 
         add(scrollPane, 0);
@@ -289,13 +289,13 @@ public class ClientesGUI extends GUIP implements ItemListener {
             System.out.println("Click Agg Cliente Btn");
             addUnClienteGUI();
         }
-        if(e.getSource() == txtIDCliente){
+        if(e.getSource() == txtIDEmpleado){
             System.out.println("Enter en el text ID CLiente a buscar");
-            IdToSearch = Integer.parseInt(txtIDCliente.getText());
+            IdToSearch = Integer.parseInt(txtIDEmpleado.getText());
         }
-        if(e.getSource() == btnSearchCliente){
+        if(e.getSource() == btnSearchEmpleado){
             System.out.println("Searching");
-            IdToSearch = Integer.parseInt(txtIDCliente.getText());
+            IdToSearch = Integer.parseInt(txtIDEmpleado.getText());
             showDialog(1);
         }
         if(e.getSource() == btnAtrasCliente){
