@@ -222,7 +222,6 @@ public class OrdenGUI extends GUIP implements ItemListener {
         lblValorTotal.setBounds(positionX + 400, positionY + 250, 60, 50);
         btnAtrasOrdenCompletada.setBounds(positionX + 30, positionY + 700, 50,50);
 
-        lblOrden.
         lblOrden.setText("12345");
         lblValorTotal.setText(String.valueOf(valorTotal));
 
