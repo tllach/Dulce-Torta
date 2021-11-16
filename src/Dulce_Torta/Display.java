@@ -32,6 +32,8 @@ public class Display implements Runnable {
 
     public ClientesGUI clientesGUI;
     public OrdenGUI ordenGUI;
+    public ContabilidadGUI contabilidadGUI;
+    public InventarioGUI inventarioGUI;
 
     public RestablecerCntaGUI restablecerCntaGUI;
     public AnuncioRestablecer anuncioRestablecer;
@@ -63,10 +65,14 @@ public class Display implements Runnable {
         registroCompletado = new RegistroCompletado(handler, width, height);
         restablecerCntaGUI = new RestablecerCntaGUI(handler, width, height);
         ordenGUI = new OrdenGUI(handler, width, height);
+        contabilidadGUI= new ContabilidadGUI(handler,width,height);
+        inventarioGUI= new InventarioGUI(handler, width, height);
         anuncioRestablecer = new AnuncioRestablecer(handler, width, height);
 
         clientesGUI = new ClientesGUI(handler, 1000,530);
         ordenGUI = new OrdenGUI(handler, 1000, 530);
+        contabilidadGUI= new ContabilidadGUI(handler, 1000, 530);
+        inventarioGUI= new InventarioGUI(handler, 1000, 530);
 
         dataBaseManager = new DataBaseManager(handler);
         lastJPanel = inicioSesionGUI;
