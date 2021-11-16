@@ -213,7 +213,7 @@ public class ClientesGUI extends GUIP implements ItemListener {
 
         btnAtrasCliente2.addActionListener(this);
 
-        infoCliente = handler.getDisplay().dataBaseManager.showRegistroClientes(IdToSearch);
+        infoCliente = handler.getBaseManager().showRegistroClientes(IdToSearch);
 
         lblID.setText(String.valueOf(IdToSearch));
         lblNombre.setText(infoCliente.get(0));

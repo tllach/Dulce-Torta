@@ -1,10 +1,13 @@
 package Dulce_Torta.GUI.GUIP;
 
+import Dulce_Torta.Actors.Orden;
 import Dulce_Torta.Handler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OrdenGUI extends GUIP implements ItemListener {
 
@@ -27,6 +30,14 @@ public class OrdenGUI extends GUIP implements ItemListener {
     JTextArea txADescripcion;
     JButton btnAtrasOrden, btnCrearOrder;
     String tipoCeleb, tipoCom;
+    ArrayList<Boolean> productos;
+    HashMap<String, Integer> tipoCelebracionPrecio;
+    int valorTotal;
+
+    // variables orden completadas GUI
+    JLabel lblOrden;
+    JLabel lblValorTotal;
+    JButton btnAtrasOrdenCompletada;
 
     public OrdenGUI(Handler handler, int width, int height) {super(handler, width, height);}
 
@@ -134,8 +145,10 @@ public class OrdenGUI extends GUIP implements ItemListener {
         removeAll();
         System.out.println("añadir orden");
         // declaracion variables
-        String t[] = {"-", "Luxury", "Combo#1", "Combo#2", "Combo#3", "No Combo"};
-        String k[]={"-", "Bodas", "Cumpleaños", "BabyShower", "Revelacion Genero", "Quinceañero", "Despedida Soltera"};
+        String[] t = {"-", "Luxury", "Combo#1", "Combo#2", "Combo#3", "No Combo"};
+        String[] k ={"-", "Bodas", "Cumpleaños", "BabyShower", "Revelacion Genero", "Quinceañero", "Despedida Soltera"};
+
+        tipoCelebracionPrecio = new HashMap<String, Integer>();
 
         txtIDCliente = new JTextField();
         txtEmpleadosEncargados = new JTextField();
@@ -150,52 +163,112 @@ public class OrdenGUI extends GUIP implements ItemListener {
         txADescripcion= new JTextArea();
         btnAtrasOrden = new JButton();
         btnCrearOrder= new JButton();
+        productos = new ArrayList<Boolean>();
         //inicializar
         changeBackground("src/Dulce_Torta/Assets/Orden/AgregarOrden.png");
 
-        txtIDCliente.setBounds(positionX + 240, positionY + 50 , 230, 30);
-        txtEmpleadosEncargados.setBounds(positionX + 680, positionY + 107, 230,30);
-        tipoCombo.setBounds(positionX + 225, positionY + 107 , 230, 30);
-        tipoCelebracion.setBounds(positionX +278, positionY + 170 , 230, 30);
-        CBTorta.setBounds(positionX+220, positionY+240, 60, 20);
-        CBTortaML.setBounds(positionX+350, positionY+240, 90, 20);
-        CBCupcake.setBounds(positionX+ 500, positionY+240, 80, 20);
-        CBBrownie.setBounds(positionX+220, positionY+300, 75, 20);
-        CBCakepops.setBounds(positionX+350, positionY+300, 85, 20);
-        CBGalletas.setBounds(positionX+500, positionY+300, 80, 20);
-        txADescripcion.setBounds(positionX+220, positionY+360, 340, 90);
-        btnAtrasOrden.setBounds(positionX+20, positionY+430, 80, 100);
-        btnCrearOrder.setBounds(positionX+780, positionY+420, 200, 80);
+        tipoCelebracionPrecio.put("Bodas", 50000);
+        tipoCelebracionPrecio.put("Cumpleaños", 0);
+        tipoCelebracionPrecio.put("BabyShower", 20000);
+        tipoCelebracionPrecio.put("Revelacion Genero",10000);
+        tipoCelebracionPrecio.put("Quinceañero", 40000);
+        tipoCelebracionPrecio.put("Despedida Soltera", 30000);
+
+        txtIDCliente.setBounds(positionX + 240, positionY + 38 , 230, 30);
+        txtEmpleadosEncargados.setBounds(positionX + 680, positionY + 90, 230,30);
+        tipoCombo.setBounds(positionX + 225, positionY + 95 , 230, 30);
+        tipoCelebracion.setBounds(positionX + 278, positionY + 158 , 230, 30);
+        CBTorta.setBounds(positionX + 220, positionY + 228, 60, 20);
+        CBTortaML.setBounds(positionX + 350, positionY + 228 , 90, 20);
+        CBCupcake.setBounds(positionX + 500, positionY + 228, 80, 20);
+        CBBrownie.setBounds(positionX + 220, positionY + 288, 75, 20);
+        CBCakepops.setBounds(positionX + 350, positionY + 288, 85, 20);
+        CBGalletas.setBounds(positionX + 500, positionY + 288, 80, 20);
+        txADescripcion.setBounds(positionX + 220, positionY + 348, 340, 90);
+        btnAtrasOrden.setBounds(positionX + 20, positionY + 418, 80, 100);
+        btnCrearOrder.setBounds(positionX + 760, positionY + 408, 200, 80);
 
         txtIDCliente.addActionListener(this);
         txtEmpleadosEncargados.addActionListener(this);
         tipoCombo.addItemListener(this);
         tipoCelebracion.addItemListener(this);
-        CBTorta.addActionListener(this);
-        CBTortaML.addActionListener(this);
-        CBCupcake.addActionListener(this);
-        CBBrownie.addActionListener(this);
-        CBCakepops.addActionListener(this);
-        CBGalletas.addActionListener(this);
+        CBTorta.addItemListener(this);
+        CBTortaML.addItemListener(this);
+        CBCupcake.addItemListener(this);
+        CBBrownie.addItemListener(this);
+        CBCakepops.addItemListener(this);
+        CBGalletas.addItemListener(this);
         btnAtrasOrden.addActionListener(this);
         btnCrearOrder.addActionListener(this);
 
         addToJPanel(lblBackground, txtIDCliente, txtEmpleadosEncargados, tipoCombo, tipoCelebracion, txADescripcion, CBTorta, CBTortaML, CBCupcake, CBBrownie, CBCakepops, CBGalletas, btnAtrasOrden, btnCrearOrder);
         buttonTransparent(btnAtrasOrden, btnCrearOrder);
-        txtSetBorder(txtIDCliente);
+        txtSetBorder(txtIDCliente, txtEmpleadosEncargados);
     }
+
+    private void showOrderGUI(){
+        removeAll();
+        System.out.println("Show Orden");
+
+        //declaracion variables
+        lblOrden = new JLabel();
+        lblValorTotal = new JLabel();
+        btnAtrasOrdenCompletada = new JButton();
+
+        //inicializacion
+        changeBackground("src/Dulce_Torta/Assets/Orden/OrdenCompletada.png");
+
+        lblOrden.setBounds(positionX + 400, positionY + 100, 60, 50);
+        lblValorTotal.setBounds(positionX + 400, positionY + 250, 60, 50);
+        btnAtrasOrdenCompletada.setBounds(positionX + 30, positionY + 700, 50,50);
+
+        lblOrden.
+        lblOrden.setText("12345");
+        lblValorTotal.setText(String.valueOf(valorTotal));
+
+        addToJPanel(lblBackground, lblOrden, lblValorTotal, btnAtrasOrdenCompletada);
+
+    }
+
 
     public void addRow(Object[] info){
         modelTable.addRow(info);
     }
 
-    private void showOrderGUI(){
-
-    }
-
     private void changeBackground(String url){
         urlBackground = url;
         lblBackground.setIcon(new ImageIcon(urlBackground));
+    }
+
+    private int calcularValorTotal() {
+        valorTotal = 0;
+        //String tipoCelebracion, ArrayList<Boolean> productos
+        valorTotal += tipoCelebracionPrecio.get(tipoCeleb);
+        int i = 0;
+        for(boolean b: productos){
+            if(i == 0 && b){
+                System.out.println("Torta");
+                valorTotal += 100000;
+            }else if(i == 1 && b){
+                System.out.println("Torta 1/2 L");
+                valorTotal += 70000;
+            }else if(i == 2 && b){
+                System.out.println("Brownie");
+                valorTotal += 40000;
+            }else if(i == 3 && b){
+                System.out.println("Cupcake");
+                valorTotal += 60000;
+            }else if(i == 4 && b){
+                System.out.println("Cakepops");
+                valorTotal += 40000;
+            }else if(i == 5 && b){
+                System.out.println("Galletas");
+                valorTotal += 40000;
+            }
+            i++;
+        }
+        System.out.println("Total: " + valorTotal);
+        return valorTotal;
     }
 
     @Override
@@ -220,27 +293,37 @@ public class OrdenGUI extends GUIP implements ItemListener {
             System.out.println("Click btn Atras");
             removeAll();
             principalGUI();
-            handler.getDisplay().pantallaPrincipalGUI.actionPerformed(e);
+            handler.getPrincipalGUI().actionPerformed(e);
         }
         if(e.getSource() == btnCrearOrder) {
-            //String estado, int idCliente, String tipoCelebracion,
+            addProductToArray();
+            //int idCliente, String tipoCelebracion,
             // String tipoCombo, String empleadosEncargados,
             // int valorTotal, String descripcion,
-            // boolean ...productos
-
+            // ArrayList<Boolean> productos
+            handler.getDisplay().addOrder(Integer.parseInt(txtIDCliente.getText()), tipoCeleb, tipoCom,
+                                           txtEmpleadosEncargados.getText(), calcularValorTotal(),
+                                            txADescripcion.getText(), productos);
+            showOrderGUI();
         }
     }
 
     @Override
-    public void itemStateChanged(ItemEvent e){
+    public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == tipoCelebracion) {
             tipoCeleb = (String) tipoCelebracion.getSelectedItem();
-        }else if(e.getSource() == tipoCombo){
+        } else if (e.getSource() == tipoCombo) {
             tipoCom = (String) tipoCombo.getSelectedItem();
         }
-        if(CBTorta.isSelected()){
+    }
 
-        }
+    public void addProductToArray(){
+        productos.add(0, CBTorta.isSelected());
+        productos.add(1, CBTortaML.isSelected());
+        productos.add(2, CBBrownie.isSelected());
+        productos.add(3, CBCupcake.isSelected());
+        productos.add(4, CBCakepops.isSelected());
+        productos.add(5, CBGalletas.isSelected());
     }
 
     private void tableOrderMouseClicked(MouseEvent evt) {

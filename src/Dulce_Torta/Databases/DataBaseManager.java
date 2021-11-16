@@ -46,32 +46,112 @@ public class DataBaseManager {
             st.setString(3, orden.getTipoCelebracion());
             st.setString(4, orden.getTipoCombo());
             st.setString(5, orden.getEmpleadosEncargadosName());
-            st.setInt(7, orden.getValorTotal());
-            st.setString(8, orden.getDescripcion());
-            int index = 9;
+            st.setInt(6, orden.getValorTotal());
+            System.out.println("pase");
+            st.setString(7, orden.getDescripcion());
+            int index = 8;
             for(boolean producto: orden.getProducto()){
+                System.out.println(index + "" + producto);
                 st.setBoolean(index, producto);
                 index ++;
             }
+            st.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     //para cuando se inicice el programa se llene el Hashmap de clientes
-    public void showAllRegistrosClientes(){
+    public void putAllRegistros(){
+        int i = 0;
+        String[] names = {"Clientes", "Empleados", "Ordenes", "Insumos"};
+        while(names.length > i){
+            String statement = "SELECT * FROM " + names[i];
+            r = con.resultSet(statement);
+            if(i == 0){
+                while(true){
+                    try {
+                        if (!r.next()) break;
+                        Cliente cliente = new Cliente(handler);
+                        cliente.setID(Integer.parseInt(r.getString( "ID_Cliente")));
+                        cliente.setNombre(r.getString("Nombre"));
+                        cliente.setApellidos(r.getString("Apellidos"));
+                        cliente.setTipoDoc(r.getString("TipoDoc"));
+                        cliente.setNroDoc(Long.parseLong(r.getString("NumDoc")));
+                        cliente.setDireccion(r.getString("Direccion"));
+                        cliente.setCelular(Long.parseLong(r.getString("Celular")));
+                        cliente.setCorreo(r.getString("Correo"));
+                        handler.getManager().addCliente(cliente);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+            if(i == 1){
+                /**
+                while(true){
+                    try {
+                        if (!r.next()) break;
+                        Empleado empleado = new Empleado(handler);
+                        empleado.setID(Integer.parseInt(r.getString( "ID_Cliente")));
+                        empleado.setNombre(r.getString("Nombre"));
+                        empleado.setApellidos(r.getString("Apellidos"));
+                        empleado.setTipoDoc(r.getString("TipoDoc"));
+                        empleado.setNroDoc(Long.parseLong(r.getString("NumDoc")));
+                        empleado.setDireccion(r.getString("Direccion"));
+                        empleado.setCelular(Long.parseLong(r.getString("Celular")));
+                        empleado.setFe
+                        handler.getManager().addCliente(cliente);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                 **/
+            }
+            if(i == 2){
+                while(true){
+                    try {
+                        if (!r.next()) break;
+                        Orden orden = new Orden(handler);
+                        orden.setIDVenta(r.getInt( "ID_Venta"));
+                        orden.setFechaVenta(r.getDate("FechaVenta"));
+                        orden.setEstado(r.getString("Estado"));
+                        orden.setValorTotal(r.getInt( "ValorTotal"));
+                        orden.setTipoCelebracion(r.getString("TipoCelebracion"));
+                        orden.setTipoCombo(r.getString("TipoCombo"));
+                        orden.setDescripcion(r.getString("Descripcion"));
+
+                        ArrayList<Boolean> productos = new ArrayList<Boolean>();
+                        productos.add(r.getBoolean("Torta"));
+                        productos.add(r.getBoolean("TortaMediaLibra"));
+                        productos.add(r.getBoolean("Brownie"));
+                        productos.add(r.getBoolean("Cupcake"));
+                        productos.add(r.getBoolean("Cakepops"));
+                        productos.add(r.getBoolean("Galletas"));
+
+                        orden.setProductos(productos);
+                        orden.setEmpleadosEncargados("EmpleadosEncargados");
+                        orden.setCliente(handler.getManager().getCliente(r.getInt( "ID_Cliente")));
+                        handler.getManager().addOrden(orden);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+            i++;
+        }
         r = con.resultSet("SELECT * FROM Clientes");
         while(true){
             try {
                 if (!r.next()) break;
                 Cliente cliente = new Cliente(handler);
-                cliente.setID(Integer.parseInt(r.getString( "ID_Cliente")));
+                cliente.setID(r.getInt( "ID_Cliente"));
                 cliente.setNombre(r.getString("Nombre"));
                 cliente.setApellidos(r.getString("Apellidos"));
                 cliente.setTipoDoc(r.getString("TipoDoc"));
-                cliente.setNroDoc(Long.parseLong(r.getString("NumDoc")));
+                cliente.setNroDoc(r.getLong("NumDoc"));
                 cliente.setDireccion(r.getString("Direccion"));
-                cliente.setCelular(Long.parseLong(r.getString("Celular")));
+                cliente.setCelular(r.getLong("Celular"));
                 cliente.setCorreo(r.getString("Correo"));
                 handler.getManager().addCliente(cliente);
             } catch (SQLException throwables) {
@@ -128,16 +208,16 @@ public class DataBaseManager {
             try {
                 if (!r.next()) break;
                 if(opc == 1){
-                    info = new Object[]{Integer.parseInt(r.getString("ID_Cliente")), r.getString("Nombre"),
+                    info = new Object[]{r.getInt("ID_Cliente"), r.getString("Nombre"),
                             r.getString("Apellidos"), r.getString("Direccion"),
-                            Long.parseLong(r.getString("Celular"))};
+                            r.getLong("Celular")};
                     handler.getClientesGUI().addRow(info);
                 }else if(opc == 2){
                     System.out.println("...");
                 }else if(opc == 3){
                     System.out.println("...");
                 }else if(opc == 4){
-                    info = new Object[]{r.getString("ID_Venta"), r.getString("Estado"), r.getString("ID_Cliente"),
+                    info = new Object[]{r.getInt("ID_Venta"), r.getString("Estado"), r.getInt("ID_Cliente"),
                             r.getString("TipoCelebracion"),r.getString("TipoCombo"),
                             r.getString("EmpleadosEncargados")};
                     handler.getOrdenGUI().addRow(info);

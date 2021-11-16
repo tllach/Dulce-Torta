@@ -126,7 +126,7 @@ public class Display implements Runnable {
         cliente.setCelular(celular);
         cliente.setCorreo(correo);
         dataBaseManager.addRegistroCliente(cliente);
-        showInfoCliente(1);
+        manager.addCliente(cliente);
     }
 
     public void showInfoCliente(int idCliente){
@@ -141,20 +141,19 @@ public class Display implements Runnable {
         System.out.println("Correo: " + cliente.getCorreo());
     }
 
-    public void addOrder(String estado, int idCliente, String tipoCelebracion, String tipoCombo, String empleadosEncargados, String descripcion, boolean... productos) {
+    public void addOrder(int idCliente, String tipoCelebracion, String tipoCombo, String empleadosEncargados, int valorTotal, String descripcion, ArrayList<Boolean> productos) {
         Orden orden = new Orden(handler);
-        orden.setEstado(estado);
+        orden.setEstado("Asignado");
         orden.setCliente(manager.getCliente(idCliente));
         orden.setTipoCelebracion(tipoCelebracion);
         orden.setTipoCombo(tipoCombo);
+        orden.setValorTotal(valorTotal);
         orden.setEmpleadosEncargados(empleadosEncargados);
-        orden.setValorTotal(12345);
         orden.setDescripcion(descripcion);
-        for (boolean producto : productos) {
-            orden.setProductos(producto);
-        }
+        orden.setProductos(productos);
         dataBaseManager.addRegistroOrden(orden);
-        manager.getCliente(idCliente).addToLasFacturas(orden);
+        //manager.getCliente(idCliente).addToLasFacturas(orden);
+        //manager.addOrden(orden);
     }
 
     public void addEmpleado(){

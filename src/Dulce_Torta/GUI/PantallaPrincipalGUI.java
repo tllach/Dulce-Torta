@@ -75,13 +75,13 @@ public class PantallaPrincipalGUI extends GUI{
             System.out.println("Click Inicio");
             handler.getDisplay().addJpanelToMain(new JLayeredPane());
         }
-        if(e.getSource() == btnClientes || e.getSource() == handler.getDisplay().clientesGUI.getBtnAtrasCliente()){
+        if(e.getSource() == btnClientes /**|| e.getSource() == handler.getClientesGUI().getBtnAtrasCliente()**/){
             System.out.println("Click Clientes");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().clientesGUI);
+            handler.getDisplay().addJpanelToMain(handler.getClientesGUI());
         }
         if(e.getSource() == btnOrdenes){
             System.out.println("Click Orden");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().ordenGUI);
+            handler.getDisplay().addJpanelToMain(handler.getOrdenGUI());
         }
         if(e.getSource() == btnEmpleados){
             System.out.println("Click Empleados");

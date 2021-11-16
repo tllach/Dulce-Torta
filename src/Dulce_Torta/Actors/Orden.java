@@ -24,10 +24,6 @@ public class Orden {
         this.handler = handler;
     }
 
-    public void calcularValorTotal(){
-
-    }
-
     public void setEmpleadosEncargados(String names) {
         this.empleadosEncargados = names;
     }
@@ -36,10 +32,8 @@ public class Orden {
         return empleadosEncargados;
     }
 
-    public void setProductos(boolean... productos) {
-        for (boolean producto : productos) {
-            this.productos.add(producto);
-        }
+    public void setProductos(ArrayList<Boolean> productos) {
+        this.productos = productos;
     }
 
     public ArrayList<Boolean> getProducto() {
