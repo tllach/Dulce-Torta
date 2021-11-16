@@ -88,9 +88,11 @@ public class PantallaPrincipalGUI extends GUI{
         }
         if(e.getSource() == btnContabilidad){
             System.out.println("Click Contabilidad");
+            handler.getDisplay().addJpanelToMain(handler.getDisplay().contabilidadGUI);
         }
         if(e.getSource() == btnInventario){
             System.out.println("Click Inventario");
+            handler.getDisplay().addJpanelToMain(handler.getDisplay().inventarioGUI);
         }
         if(e.getSource() == btnFacturas){
             System.out.println("Click Facturas");
