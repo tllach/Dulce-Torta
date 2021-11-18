@@ -70,4 +70,5 @@ public abstract class GUIP extends JLayeredPane implements ActionListener {
         }
     }
 
+    public abstract boolean isTxtValid(int opc);
 }
