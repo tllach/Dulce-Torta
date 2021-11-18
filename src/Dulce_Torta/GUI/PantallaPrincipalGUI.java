@@ -13,6 +13,7 @@ public class PantallaPrincipalGUI extends GUI{
 
     public PantallaPrincipalGUI(Handler handler, int width, int height){
         super(handler, width, height);
+        handler.getManager().setAllClientes();
     }
 
     @Override
@@ -57,17 +58,16 @@ public class PantallaPrincipalGUI extends GUI{
 
     }
 
-    public JPanel createJPanel(){
+    /**public JPanel createJPanel(){
         JPanel panel = new JPanel();
         panel.setOpaque(true);
         panel.setLocation(0,160);
         panel.setSize(1000,530);
         JLabel label = new JLabel();
         panel.add(label);
-        //label.setIcon(new ImageIcon("src/Dulce_Torta/Assets"));
         label.setBounds(0,0,-1,-1);
         return panel;
-    }
+    }**/
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -75,13 +75,13 @@ public class PantallaPrincipalGUI extends GUI{
             System.out.println("Click Inicio");
             handler.getDisplay().addJpanelToMain(new JLayeredPane());
         }
-        if(e.getSource() == btnClientes || e.getSource() == handler.getDisplay().clientesGUI.getBtnAtrasCliente()){
+        if(e.getSource() == btnClientes /**|| e.getSource() == handler.getClientesGUI().getBtnAtrasCliente()**/){
             System.out.println("Click Clientes");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().clientesGUI);
+            handler.getDisplay().addJpanelToMain(handler.getClientesGUI());
         }
         if(e.getSource() == btnOrdenes){
             System.out.println("Click Orden");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().ordenGUI);
+            handler.getDisplay().addJpanelToMain(handler.getOrdenGUI());
         }
         if(e.getSource() == btnEmpleados){
             System.out.println("Click Empleados");

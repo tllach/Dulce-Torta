@@ -1,7 +1,6 @@
 package Dulce_Torta.Actors;
 
 import Dulce_Torta.Handler;
-import Dulce_Torta.Orden;
 
 import java.util.HashMap;
 
@@ -29,7 +28,7 @@ public class Cliente extends Persona{
     }
 
     public void addToLasFacturas(Orden orden) {
-        lasFacturas.put(orden.getIdOrden(),orden);
+        lasFacturas.put(orden.getIDVenta(),orden);
     }
 
     public Orden getFactura(int idOrden){

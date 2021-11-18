@@ -65,7 +65,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         btnGastosAdmin= new JButton();
         btnBalanceG= new JButton();
         lblBackground= new JLabel();
-        urlBackground="src/Dulce_Torta/Assets/CONTABILIDAD.png";
+        urlBackground= "src/Dulce_Torta/Assets/Contabilidad/CONTABILIDAD.png";
     }
 
     public void initComponents() {
@@ -76,8 +76,6 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
 
         positionX = this.getX();
         positionY = this.getY();
-        System.out.println(positionX);
-        System.out.println(positionY);
 
         lblBackground.setIcon(new ImageIcon(urlBackground));
         lblBackground.setBounds(positionX, positionY, 1000,500);
@@ -92,6 +90,11 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         buttonTransparent(btnBalanceG, btnGastosAdmin);
     }
 
+    @Override
+    public boolean isTxtValid(int opc) {
+        return false;
+    }
+
     public void ShowGastosAdministrador(){
         removeAll();
         //declaracion de variables
@@ -100,7 +103,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         btnGastosFijos= new JButton();
 
         //iniciar Componentes
-        changeBackground("src/Dulce_Torta/Assets/Contabilidad_Gastos de administracion.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Contabilidad_Gastos de administracion.png");
 
         btnAtras.setBounds(positionX + 37, positionY + 410, 75,75);
         btnGastosNomina.setBounds(positionX + 230, positionY + 150, 220,220);
@@ -122,7 +125,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         btnPatrimonio= new JButton();
         btnAtras2= new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/21.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/BalanceGeneral.png");
 
         btnActivos.setBounds(positionX+100, positionY+160, 160, 200);
         btnPasivos.setBounds(positionX+420, positionY+150, 150, 200);
@@ -140,7 +143,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
     }
     public void ShowGastosNomina(){
         btnAtras3= new JButton();
-        changeBackground("src/Dulce_Torta/Assets/Contabilidad_Gastos de administracion_Nomina.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Contabilidad_Gastos de administracion_Nomina.png");
 
         btnAtras3.setBounds(positionX+35, positionY+407, 75, 75);
 
@@ -155,7 +158,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         btnImpuestos= new JButton();
         btnAtras4= new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/Gastos de administracion_Gastos fijos.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Gastos de administracion_Gastos fijos.png");
 
         btnServiciosP.setBounds(positionX+140, positionY+140, 150, 230);
         btnArrendamiento.setBounds(positionX+380, positionY+140, 200, 230);
@@ -176,7 +179,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         btnRegistrarS= new JButton();
         btnAtras5= new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/Servicios publicos.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Servicios publicos.png");
 
         txtEnergia.setBounds(positionX+350, positionY+300, 110, 35);
         txtAgua.setBounds(positionX+705, positionY+303, 110, 35);
@@ -196,7 +199,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
        btnRegistrarA= new JButton();
        btnAtras6= new JButton();
 
-       changeBackground("src/Dulce_Torta/Assets/Arrendamiento.png");
+       changeBackground("src/Dulce_Torta/Assets/Contabilidad/Arrendamiento.png");
 
        txtArrendamiento.setBounds(positionX+510, positionY+347, 170, 40);
        btnRegistrarA.setBounds(positionX+415, positionY+430, 170, 50);
@@ -216,7 +219,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
        btnRegistrarI= new JButton();
        btnAtras7= new JButton();
 
-       changeBackground("src/Dulce_Torta/Assets/Impuestos2.png");
+       changeBackground("src/Dulce_Torta/Assets/Contabilidad/Impuestos2.png");
 
        txtImpuestoRFuente.setBounds(positionX+325, positionY+132, 150, 40);
        txtImpuestoRICA.setBounds(positionX+325, positionY+307, 150, 40);
@@ -238,7 +241,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         btnCheck= new JButton();
         btnAtras8= new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/22.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Activos.png");
 
         txtValorPPE.setBounds(positionX+515, positionY+215, 280, 70);
         btnCheck.setBounds(positionX+820, positionY+220, 60, 60);
@@ -254,7 +257,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
     public void ShowPasivos(){
         btnAtras8= new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/23.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Pasivos.png");
 
         btnAtras8.setBounds(positionX+35, positionY+405, 70, 70 );
 
@@ -266,7 +269,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
     public void ShowPatrimonio(){
         btnAtras8= new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/24.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Patrimonio.png");
 
         btnAtras8.setBounds(positionX+35, positionY+405, 70, 70 );
 
@@ -281,7 +284,7 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
         lblBackground.setIcon(new ImageIcon(urlBackground));
     }
     public void principalGUI(){
-        urlBackground = "src/Dulce_Torta/Assets/CONTABILIDAD.png";
+        urlBackground = "src/Dulce_Torta/Assets/Contabilidad/CONTABILIDAD.png";
         lblBackground.setIcon(new ImageIcon(urlBackground));
         addToJPanel(lblBackground, btnGastosAdmin, btnBalanceG);
         buttonTransparent(btnGastosAdmin, btnBalanceG);
