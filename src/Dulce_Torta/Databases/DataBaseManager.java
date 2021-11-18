@@ -38,20 +38,29 @@ public class DataBaseManager {
         }
     }
 
+    public void updateOrdenEstado(String estado, String idVenta){
+        String command = "UPDATE Ordenes SET Estado = '"
+                + estado + "' WHERE ID_Venta = '" + idVenta + "'";
+        st = con.prepareStatement(command);
+        try{
+            st.execute();
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
     public void addRegistroOrden(Orden orden){
         st = con.prepareStatement("INSERT INTO Ordenes (ID_venta, Estado, ID_Cliente, TipoCelebracion, TipoCombo, EmpleadosEncargados, FechaVenta, ValorTotal, Descripcion, Torta, TortaMediaLibra, Brownie, Cupcake, Cakepops, Galletas) VALUES (null, ?, ?, ?, ?, ?, date('now'), ?, ?, ?, ?, ?, ?, ?, ?)");
-        try {
+        try{
             st.setString(1, orden.getEstado());
             st.setInt(2, orden.getCliente().getID());
             st.setString(3, orden.getTipoCelebracion());
             st.setString(4, orden.getTipoCombo());
             st.setString(5, orden.getEmpleadosEncargadosName());
             st.setInt(6, orden.getValorTotal());
-            System.out.println("pase");
             st.setString(7, orden.getDescripcion());
             int index = 8;
             for(boolean producto: orden.getProducto()){
-                System.out.println(index + "" + producto);
                 st.setBoolean(index, producto);
                 index ++;
             }
@@ -60,8 +69,8 @@ public class DataBaseManager {
             throwables.printStackTrace();
         }
     }
-
     //para cuando se inicice el programa se llene el Hashmap de clientes
+
     public void putAllRegistros(){
         int i = 0;
         String[] names = {"Clientes", "Empleados", "Ordenes", "Insumos"};
@@ -114,7 +123,7 @@ public class DataBaseManager {
                         if (!r.next()) break;
                         Orden orden = new Orden(handler);
                         orden.setIDVenta(r.getInt( "ID_Venta"));
-                        orden.setFechaVenta(r.getDate("FechaVenta"));
+                        orden.setFechaVenta(r.getString("FechaVenta"));
                         orden.setEstado(r.getString("Estado"));
                         orden.setValorTotal(r.getInt( "ValorTotal"));
                         orden.setTipoCelebracion(r.getString("TipoCelebracion"));
@@ -130,7 +139,7 @@ public class DataBaseManager {
                         productos.add(r.getBoolean("Galletas"));
 
                         orden.setProductos(productos);
-                        orden.setEmpleadosEncargados("EmpleadosEncargados");
+                        orden.setEmpleadosEncargados(r.getString("EmpleadosEncargados"));
                         orden.setCliente(handler.getManager().getCliente(r.getInt( "ID_Cliente")));
                         handler.getManager().addOrden(orden);
                     } catch (SQLException throwables) {
@@ -139,24 +148,6 @@ public class DataBaseManager {
                 }
             }
             i++;
-        }
-        r = con.resultSet("SELECT * FROM Clientes");
-        while(true){
-            try {
-                if (!r.next()) break;
-                Cliente cliente = new Cliente(handler);
-                cliente.setID(r.getInt( "ID_Cliente"));
-                cliente.setNombre(r.getString("Nombre"));
-                cliente.setApellidos(r.getString("Apellidos"));
-                cliente.setTipoDoc(r.getString("TipoDoc"));
-                cliente.setNroDoc(r.getLong("NumDoc"));
-                cliente.setDireccion(r.getString("Direccion"));
-                cliente.setCelular(r.getLong("Celular"));
-                cliente.setCorreo(r.getString("Correo"));
-                handler.getManager().addCliente(cliente);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
         }
     }
 

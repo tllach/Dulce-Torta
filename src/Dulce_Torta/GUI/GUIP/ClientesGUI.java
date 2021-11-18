@@ -1,5 +1,6 @@
 package Dulce_Torta.GUI.GUIP;
 
+import Dulce_Torta.Actors.Cliente;
 import Dulce_Torta.Handler;
 
 import javax.swing.*;
@@ -92,6 +93,7 @@ public class ClientesGUI extends GUIP implements ItemListener {
         txtSetBorder(txtIDCliente);
 
         createTable();
+        handler.getBaseManager().addRow(1);
     }
 
     public void createTable() {
@@ -177,9 +179,12 @@ public class ClientesGUI extends GUIP implements ItemListener {
         btnAggCliente.addActionListener(this);
 
         add(tipoDocBox, 0);
-        addToJPanel(lblBackground, txtNombre,  txtApellidos, txtNroDocumento, txtCelular, txtDireccion, txtCorreo, btnAtrasCliente, btnAggCliente);
+        addToJPanel(lblBackground, txtNombre,  txtApellidos,
+                    txtNroDocumento, txtCelular, txtDireccion,
+                    txtCorreo, btnAtrasCliente, btnAggCliente);
         buttonTransparent(btnAtrasCliente, btnAggCliente);
-        txtSetBorder(txtNombre, txtApellidos, txtNroDocumento, txtCelular, txtDireccion, txtCorreo);
+        txtSetBorder(txtNombre, txtApellidos, txtNroDocumento,
+                        txtCelular, txtDireccion, txtCorreo);
     }
 
     private void showUnClienteGUI(){
@@ -213,7 +218,7 @@ public class ClientesGUI extends GUIP implements ItemListener {
 
         btnAtrasCliente2.addActionListener(this);
 
-        infoCliente = handler.getBaseManager().showRegistroClientes(IdToSearch);
+        /**infoCliente = handler.getBaseManager().showRegistroClientes(IdToSearch);
 
         lblID.setText(String.valueOf(IdToSearch));
         lblNombre.setText(infoCliente.get(0));
@@ -223,10 +228,26 @@ public class ClientesGUI extends GUIP implements ItemListener {
         lblCelular.setText(infoCliente.get(4));
         lblDireccion.setText(infoCliente.get(5));
         lblCorreo.setText(infoCliente.get(6));
+         **/
 
-        addToJPanel(lblBackground, lblID, lblNombre, lblApellidos, lblTipoIdentidad, lblNroDoc, lblCelular, lblDireccion, lblCorreo, btnAtrasCliente2);
+        Cliente cliente = handler.getManager().getCliente(IdToSearch);
+
+        lblID.setText(String.valueOf(cliente.getID()));
+        lblNombre.setText(cliente.getNombre());
+        lblApellidos.setText(cliente.getApellidos());
+        lblTipoIdentidad.setText(cliente.getTipoDoc());
+        lblNroDoc.setText(String.valueOf(cliente.getNroDoc()));
+        lblCelular.setText(String.valueOf(cliente.getCelular()));
+        lblDireccion.setText(cliente.getDireccion());
+        lblCorreo.setText(cliente.getCorreo());
+
+        addToJPanel(lblBackground, lblID, lblNombre, lblApellidos,
+                    lblTipoIdentidad, lblNroDoc, lblCelular,
+                    lblDireccion, lblCorreo, btnAtrasCliente2);
         buttonTransparent(btnAtrasCliente2);
-        setFontLbl(lblID, lblNombre, lblApellidos, lblTipoIdentidad, lblNroDoc, lblCelular, lblDireccion, lblCorreo);
+        setFontLbl(lblID, lblNombre, lblApellidos,
+                    lblTipoIdentidad, lblNroDoc, lblCelular,
+                    lblDireccion, lblCorreo);
     }
 
     private void changeBackground(String url){
@@ -236,6 +257,41 @@ public class ClientesGUI extends GUIP implements ItemListener {
 
     public void addRow(Object[] obj){
         modelTable.addRow(obj);
+    }
+
+    @Override
+    public boolean isTxtValid(int opc){
+        switch(opc){
+            case 1:
+                try{
+                    //busca por si no digito ninguna info
+                    if(txtNombre.getText().equals("") || txtApellidos.getText().equals("")
+                            || txtDireccion.getText().equals("") || txtCelular.getText().equals("")
+                            || txtNroDocumento.getText().equals("") || txtCorreo.getText().equals("")) {
+                        showDialog(3);
+                        return false;
+                    }
+                    long i = Long.parseLong(txtCelular.getText()) + 1;
+                    i = Long.parseLong(txtNroDocumento.getText()) + 1;
+                    tipoDocBox.getSelectedItem();
+                    return true;
+                }catch(Exception e){
+                    showDialog(3);
+                    return false;
+                }
+            case 2:
+                try{
+                    Cliente cliente = handler.getManager().getCliente(IdToSearch);
+                    if(cliente == null){
+                        return false;
+                    }
+                    return true;
+                }catch(Exception e){
+                    showDialog(2);
+                    return false;
+                }
+        }
+        return false;
     }
 
     public void showDialog(int opc) {
@@ -254,17 +310,14 @@ public class ClientesGUI extends GUIP implements ItemListener {
                         yesOpt
                 );
                 if (n == JOptionPane.YES_OPTION) {
-                    System.out.println("Yes");
                     showUnClienteGUI();
-                } else if (n == JOptionPane.NO_OPTION){
-                    System.out.println("No");
                 }
                 break;
             case 2:
                 String okOpt = "Ok";
                 options = new Object[]{okOpt};
                 n = JOptionPane.showOptionDialog(null,
-                        "No se encontro ningun cliente con el ID: " + IdToSearch + "\n\tNombre: ",
+                        "No se encontro ningun cliente con el ID: " + IdToSearch,
                         "No se encontro el Cliente",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
@@ -272,9 +325,19 @@ public class ClientesGUI extends GUIP implements ItemListener {
                         options,
                         okOpt
                 );
-                if (n == JOptionPane.YES_OPTION) {
-                    System.out.println("Ok");
-                }
+                break;
+            case 3:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Alguna de la informacion ingresada esta errada \nPor favor verifica y vuelve a digitar",
+                        "Información Errada",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
         }
     }
 
@@ -283,37 +346,43 @@ public class ClientesGUI extends GUIP implements ItemListener {
         if(e.getSource() == btnShowList){
             System.out.println("Click Show List Btn");
             showTablaCliente();
-            handler.getBaseManager().addRow(1);
         }
         if(e.getSource() == btnAddClienteMenu){
-            System.out.println("Click Agg Cliente Btn");
+            System.out.println("Click Agg Cliente Menu");
             addUnClienteGUI();
         }
         if(e.getSource() == txtIDCliente){
-            System.out.println("Enter en el text ID CLiente a buscar");
+            System.out.println("Entre en el text ID CLiente a buscar");
             IdToSearch = Integer.parseInt(txtIDCliente.getText());
         }
         if(e.getSource() == btnSearchCliente){
-            System.out.println("Searching");
+            System.out.println("Searching Cliente");
             IdToSearch = Integer.parseInt(txtIDCliente.getText());
-            showDialog(1);
+            if(isTxtValid(2)){
+                showDialog(1);
+            }else{
+                showDialog(2);
+            }
+            clearTxtField(txtIDCliente);
         }
         if(e.getSource() == btnAtrasCliente){
-            System.out.println("Click btn Atras");
+            System.out.println("Click btn Atras Cliente");
             removeAll();
             prinicipalGUI();
             handler.getPrincipalGUI().actionPerformed(e);
         }
         if(e.getSource() == btnAggCliente){
-            handler.getDisplay().addCliente(txtNombre.getText(), txtApellidos.getText(), tipoDoc,
-                    Long.parseLong(txtNroDocumento.getText()), txtDireccion.getText(),
-                    Long.parseLong(txtCelular.getText()), txtCorreo.getText());
-            clearTxtField(txtNombre, txtApellidos, txtCelular, txtNroDocumento, txtDireccion, txtCorreo);
-            tipoDocBox.setSelectedIndex(0);
+            System.out.println("undi btn agg cliente");
+            if(isTxtValid(1)){
+                System.out.println("All info is correct");
+                handler.getDisplay().addCliente(txtNombre.getText(), txtApellidos.getText(), tipoDoc,
+                        Long.parseLong(txtNroDocumento.getText()), txtDireccion.getText(),
+                        Long.parseLong(txtCelular.getText()), txtCorreo.getText());
+                addUnClienteGUI();
+            }
         }
         if(e.getSource() == btnAtrasCliente2) {
             showTablaCliente();
-            handler.getBaseManager().addRow(1);
         }
     }
 
@@ -328,7 +397,6 @@ public class ClientesGUI extends GUIP implements ItemListener {
         if(e.getClickCount() == 1){
             JTable receptor = (JTable) e.getSource();
             IdToSearch = Integer.parseInt(receptor.getModel().getValueAt(receptor.getSelectedRow(), 0).toString());
-            System.out.println(IdToSearch);
             showDialog(1);
         }
     }

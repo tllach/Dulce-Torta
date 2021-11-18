@@ -1,10 +1,12 @@
 package Dulce_Torta.GUI.GUIP;
 
+import Dulce_Torta.Actors.Cliente;
 import Dulce_Torta.Actors.Orden;
 import Dulce_Torta.Handler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +14,12 @@ import java.util.HashMap;
 public class OrdenGUI extends GUIP implements ItemListener {
 
     //variables a usar al principio;p
-    JButton btnShowListOrder;
+    JButton btnShowListOrden;
     JButton btnAddOrdenMenu;
 
     //variables a usar en la lista orden
-    JButton btnSearchOrder;
-    JTextField txtIDOrder;
+    JButton btnSearchOrden;
+    JTextField txtIDOrden;
     JTable tableOrder;
     DefaultTableModel modelTable;
     JScrollPane scrollPane;
@@ -26,23 +28,28 @@ public class OrdenGUI extends GUIP implements ItemListener {
     // variables a usar al momento de crear una orden D:
     JTextField txtIDCliente, txtEmpleadosEncargados;
     JComboBox tipoCelebracion, tipoCombo;
-    JCheckBox CBTorta, CBTortaML, CBCupcake, CBBrownie, CBCakepops, CBGalletas;
+    JCheckBox CBTorta, CBTortaML, CBCupcake;
+    JCheckBox CBBrownie, CBCakepops, CBGalletas;
     JTextArea txADescripcion;
-    JButton btnAtrasOrden, btnCrearOrder;
+    JButton btnAtrasOrden, btnCrearOrden;
     String tipoCeleb, tipoCom;
     ArrayList<Boolean> productos;
     HashMap<String, Integer> tipoCelebracionPrecio;
     int valorTotal;
 
-    // variables orden completadas GUI
-    JLabel lblOrden;
-    JLabel lblValorTotal;
-    JButton btnAtrasOrdenCompletada;
+    // variables visualizar orden GUI
+    Orden orden;
+    JLabel lblIDCliente, lblDireccion, lblProductos;
+    JLabel lblCelular, lblTipoCom, lblTipoCel, lblEstado;
+    JLabel lblEmpleadosEncargados, lblDescripcion, lblValorTotal;
+    JButton btnAtrasVisualizarOrden, btnCambiarEstado;
+    String antEstado, sgtEstado;
+    String[] TipoEstado;
 
     public OrdenGUI(Handler handler, int width, int height) {super(handler, width, height);}
 
     protected void declaration() {
-        btnShowListOrder = new JButton();
+        btnShowListOrden = new JButton();
         lblBackground = new JLabel();
         btnAddOrdenMenu = new JButton();
         urlBackground = "src/Dulce_Torta/Assets/Orden/Orden.png";
@@ -61,41 +68,42 @@ public class OrdenGUI extends GUIP implements ItemListener {
         lblBackground.setIcon(new ImageIcon(urlBackground));
         lblBackground.setBounds(positionX, positionY, 1000,500);
 
-        btnShowListOrder.setBounds(positionX + 260, positionY + 120 , 160, 270);
-        btnShowListOrder.addActionListener(this);
+        btnShowListOrden.setBounds(positionX + 260, positionY + 120 , 160, 270);
+        btnShowListOrden.addActionListener(this);
 
         btnAddOrdenMenu.setBounds(positionX + 560, positionY + 130, 160,250);
         btnAddOrdenMenu.addActionListener(this);
 
-        addToJPanel(lblBackground, btnAddOrdenMenu, btnShowListOrder);
-        buttonTransparent(btnAddOrdenMenu, btnShowListOrder);
+        addToJPanel(lblBackground, btnAddOrdenMenu, btnShowListOrden);
+        buttonTransparent(btnAddOrdenMenu, btnShowListOrden);
     }
 
-    public void ShowTableOrder(){
+    public void ShowTableOrden(){
         removeAll();
         //declaracion
-        btnSearchOrder= new JButton();
+        btnSearchOrden = new JButton();
         btnAtrasOrden = new JButton();
-        txtIDOrder= new JTextField();
+        txtIDOrden = new JTextField();
         tableOrder= new JTable();
         scrollPane= new JScrollPane(tableOrder);
         //iniciar componentes
         urlBackground = "src/Dulce_Torta/Assets/Lista.png";
         lblBackground.setIcon(new ImageIcon(urlBackground));
 
-        btnSearchOrder.setBounds(897, positionY + 20, 50,54);
-        txtIDOrder.setBounds(706, positionY + 24, 188,47);
+        btnSearchOrden.setBounds(897, positionY + 20, 50,54);
+        txtIDOrden.setBounds(706, positionY + 24, 188,47);
         btnAtrasOrden.setBounds(positionX + 53, positionY + 17, 80,80);
 
-        txtIDOrder.addActionListener(this);
-        btnSearchOrder.addActionListener(this);
+        txtIDOrden.addActionListener(this);
+        btnSearchOrden.addActionListener(this);
         btnAtrasOrden.addActionListener(this);
 
-        addToJPanel(lblBackground, btnSearchOrder, txtIDOrder, btnAtrasOrden);
-        buttonTransparent(btnSearchOrder, btnAtrasOrden);
-        txtSetBorder(txtIDOrder);
+        addToJPanel(lblBackground, btnSearchOrden, txtIDOrden, btnAtrasOrden);
+        buttonTransparent(btnSearchOrden, btnAtrasOrden);
+        txtSetBorder(txtIDOrden);
 
         createTable();
+        handler.getBaseManager().addRow(4);
     }
 
     public void createTable(){
@@ -137,8 +145,8 @@ public class OrdenGUI extends GUIP implements ItemListener {
     public void principalGUI(){
         urlBackground = "src/Dulce_Torta/Assets/Orden/Orden.png";
         lblBackground.setIcon(new ImageIcon(urlBackground));
-        addToJPanel(lblBackground, btnAddOrdenMenu, btnShowListOrder);
-        buttonTransparent(btnAddOrdenMenu, btnShowListOrder);
+        addToJPanel(lblBackground, btnAddOrdenMenu, btnShowListOrden);
+        buttonTransparent(btnAddOrdenMenu, btnShowListOrden);
     }
 
     public void AddUnaOrdenGUI(){
@@ -162,8 +170,9 @@ public class OrdenGUI extends GUIP implements ItemListener {
         CBGalletas= new JCheckBox("Galletas");
         txADescripcion= new JTextArea();
         btnAtrasOrden = new JButton();
-        btnCrearOrder= new JButton();
+        btnCrearOrden = new JButton();
         productos = new ArrayList<Boolean>();
+
         //inicializar
         changeBackground("src/Dulce_Torta/Assets/Orden/AgregarOrden.png");
 
@@ -186,7 +195,7 @@ public class OrdenGUI extends GUIP implements ItemListener {
         CBGalletas.setBounds(positionX + 500, positionY + 288, 80, 20);
         txADescripcion.setBounds(positionX + 220, positionY + 348, 340, 90);
         btnAtrasOrden.setBounds(positionX + 20, positionY + 418, 80, 100);
-        btnCrearOrder.setBounds(positionX + 760, positionY + 408, 200, 80);
+        btnCrearOrden.setBounds(positionX + 760, positionY + 408, 200, 80);
 
         txtIDCliente.addActionListener(this);
         txtEmpleadosEncargados.addActionListener(this);
@@ -199,44 +208,122 @@ public class OrdenGUI extends GUIP implements ItemListener {
         CBCakepops.addItemListener(this);
         CBGalletas.addItemListener(this);
         btnAtrasOrden.addActionListener(this);
-        btnCrearOrder.addActionListener(this);
+        btnCrearOrden.addActionListener(this);
 
-        addToJPanel(lblBackground, txtIDCliente, txtEmpleadosEncargados, tipoCombo, tipoCelebracion, txADescripcion, CBTorta, CBTortaML, CBCupcake, CBBrownie, CBCakepops, CBGalletas, btnAtrasOrden, btnCrearOrder);
-        buttonTransparent(btnAtrasOrden, btnCrearOrder);
+        addToJPanel(lblBackground, txtIDCliente, txtEmpleadosEncargados, tipoCombo, tipoCelebracion,
+                    txADescripcion, CBTorta, CBTortaML, CBCupcake, CBBrownie, CBCakepops,
+                    CBGalletas, btnAtrasOrden, btnCrearOrden);
+        buttonTransparent(btnAtrasOrden, btnCrearOrden);
         txtSetBorder(txtIDCliente, txtEmpleadosEncargados);
     }
 
-    private void showOrderGUI(){
+    private void showOrdenGUI() {
         removeAll();
         System.out.println("Show Orden");
 
         //declaracion variables
-        lblOrden = new JLabel();
+        lblID = new JLabel();
+        lblIDCliente = new JLabel();
+        lblDireccion = new JLabel();
+        lblCelular = new JLabel();
+        lblTipoCom = new JLabel();
+        lblTipoCel = new JLabel();
+        lblEstado = new JLabel();
+        lblEmpleadosEncargados = new JLabel();
+        lblDescripcion = new JLabel();
         lblValorTotal = new JLabel();
-        btnAtrasOrdenCompletada = new JButton();
-
+        lblProductos = new JLabel();
+        btnCambiarEstado = new JButton();
+        btnAtrasVisualizarOrden = new JButton();
+        TipoEstado = new String[]{"Asignado","En Progreso", "A Repartir", "Entregado"};
         //inicializacion
-        changeBackground("src/Dulce_Torta/Assets/Orden/OrdenCompletada.png");
+        changeBackground("src/Dulce_Torta/Assets/Orden/MostrarOrden.png");
 
-        lblOrden.setBounds(positionX + 400, positionY + 100, 60, 50);
-        lblValorTotal.setBounds(positionX + 400, positionY + 250, 60, 50);
-        btnAtrasOrdenCompletada.setBounds(positionX + 30, positionY + 700, 50,50);
+        lblID.setBounds(positionX + 185, positionY + 17, 170, 40);
+        lblIDCliente.setBounds(positionX + 245, positionY + 89, 160, 30);
+        lblDireccion.setBounds(positionX + 200, positionY + 138, 190, 30);
+        lblCelular.setBounds(positionX + 180, positionY + 185, 160, 30);
+        lblTipoCom.setBounds(positionX + 230, positionY + 235, 160, 30);
+        lblTipoCel.setBounds(positionX + 280, positionY + 285, 200, 30);
+        lblEstado.setBounds(positionX + 690, positionY + 21, 160, 30);
+        lblEmpleadosEncargados.setBounds(positionX + 600, positionY + 125, 350, 30);
+        lblDescripcion.setBounds(positionX + 600, positionY + 203, 300, 90);
+        lblValorTotal.setBounds(positionX + 665, positionY + 328, 230, 50);
+        btnCambiarEstado.setBounds(positionX +  710, positionY + 400, 240, 70);
+        btnAtrasVisualizarOrden.setBounds(positionX + 37, positionY + 400, 70, 70);
 
-        lblOrden.setText("12345");
-        lblValorTotal.setText(String.valueOf(valorTotal));
+        //actionListeners
+        btnCambiarEstado.addActionListener(this);
+        btnAtrasVisualizarOrden.addActionListener(this);
 
-        addToJPanel(lblBackground, lblOrden, lblValorTotal, btnAtrasOrdenCompletada);
+        //set txts
+        orden = handler.getManager().getOrden(IDToSearch);
 
-    }
+        lblID.setText(String.valueOf(orden.getIDVenta()));
+        lblIDCliente.setText(String.valueOf(orden.getCliente().getID()));
+        lblDireccion.setText(orden.getCliente().getDireccion());
+        lblCelular.setText(String.valueOf(orden.getCliente().getCelular()));
+        lblTipoCom.setText(orden.getTipoCombo());
+        lblTipoCel.setText(orden.getTipoCelebracion());
+        lblEstado.setText(orden.getEstado());
+        lblDescripcion.setText(orden.getDescripcion());
+        lblEmpleadosEncargados.setText(orden.getEmpleadosEncargadosName());
+        lblValorTotal.setText(String.valueOf(orden.getValorTotal()));
 
+        int yCheckBox = positionY + 345;
+        int xInicial = positionX + 230;
+        int height = 10;
+        int k = 0;
+        StringBuilder productos = new StringBuilder("<html><body>");
+        for(Boolean b: orden.getProducto()){
+            if(b){
+                switch(k){
+                    case 0 -> productos.append("Torta<br>");
+                    case 1 -> productos.append("Torta1/2L<br>");
+                    case 2 -> productos.append("Cupcake<br>");
+                    case 3 -> productos.append("Brownie<br>");
+                    case 4 -> productos.append("Cakepops<br>");
+                    case 5 -> productos.append("Galletas<br>");
+                }
+                height += 20;
+            }
+            k++;
+        }
+        productos.append("</body></html>");
 
-    public void addRow(Object[] info){
-        modelTable.addRow(info);
+        lblProductos.setBounds(xInicial, yCheckBox, 200, height);
+        lblProductos.setText(productos.toString());
+        lblProductos.setFont(new Font("Vedana", Font.PLAIN, 17));
+
+        //format the description string
+        String[] text  = lblDescripcion.getText().split("[,.]+");
+        StringBuilder descripcion = new StringBuilder("<html><body>");
+        for(String i: text){
+            descripcion.append(i).append("<br>");
+        }
+        descripcion.append("</body></html>");
+        lblDescripcion.setText(descripcion.toString());
+        lblDescripcion.setFont(new Font("Verdana", Font.PLAIN, 17));
+
+        lblDireccion.setFont(new Font("Verdana", Font.PLAIN, 17));
+
+        addToJPanel(lblBackground, lblID, lblIDCliente, lblDireccion, lblCelular, lblProductos,
+                     lblTipoCom, lblTipoCel, lblEstado, lblEmpleadosEncargados, lblDescripcion,
+                     lblValorTotal, btnCambiarEstado, btnAtrasVisualizarOrden);
+
+        setFontLbl(lblID, lblIDCliente, lblCelular, lblTipoCel, lblTipoCom,
+                    lblEstado, lblEmpleadosEncargados, lblValorTotal);
+
+        buttonTransparent(btnCambiarEstado, btnAtrasVisualizarOrden);
     }
 
     private void changeBackground(String url){
         urlBackground = url;
         lblBackground.setIcon(new ImageIcon(urlBackground));
+    }
+
+    public void addRow(Object[] info){
+        modelTable.addRow(info);
     }
 
     private int calcularValorTotal() {
@@ -246,64 +333,182 @@ public class OrdenGUI extends GUIP implements ItemListener {
         int i = 0;
         for(boolean b: productos){
             if(i == 0 && b){
-                System.out.println("Torta");
                 valorTotal += 100000;
             }else if(i == 1 && b){
-                System.out.println("Torta 1/2 L");
                 valorTotal += 70000;
             }else if(i == 2 && b){
-                System.out.println("Brownie");
                 valorTotal += 40000;
             }else if(i == 3 && b){
-                System.out.println("Cupcake");
                 valorTotal += 60000;
             }else if(i == 4 && b){
-                System.out.println("Cakepops");
                 valorTotal += 40000;
             }else if(i == 5 && b){
-                System.out.println("Galletas");
                 valorTotal += 40000;
             }
             i++;
         }
-        System.out.println("Total: " + valorTotal);
         return valorTotal;
+    }
+
+    public boolean isTxtValid(int opc){
+        switch(opc){
+            case 1:
+                try{
+                    //busca por si no digito ninguna info
+                    if(txtIDCliente.getText().equals("") || txtEmpleadosEncargados.getText().equals("")
+                        || txADescripcion.getText().equals("")) {
+                        showDialog(3);
+                        return false;
+                    }
+                    //check si se digito un numero en el idCliente
+                    int i = Integer.parseInt(txtIDCliente.getText()) + 1;
+                    //check que se haya seleccionado algun elemento
+                    tipoCombo.getSelectedItem();
+                    tipoCelebracion.getSelectedItem();
+                    //check si al menos un checkbox haya sido seleccionado
+                    if(!(CBTorta.isSelected() || CBTortaML.isSelected() || CBCupcake.isSelected()
+                        ||CBBrownie.isSelected() || CBCakepops.isSelected() || CBGalletas.isSelected())){
+                        showDialog(3);
+                        return false;
+                    }
+                    //check que el id ingresado corresponde a un cliente ya creado
+                    Cliente cliente = handler.getManager().getCliente(IDToSearch);
+                    if(cliente == null){
+                        showDialog(2);
+                        return false;
+                    }
+                    return true;
+                }catch(Exception e){
+                    showDialog(3);
+                    return false;
+                }
+            case 2:
+                try{
+                    Orden orden = handler.getManager().getOrden(IDToSearch);
+                    if(orden == null){
+                        return false;
+                    }
+                    return true;
+                }catch(Exception e){
+                    return false;
+                }
+        }
+        return false;
+    }
+
+    public void showDialog(int opc) {
+        switch (opc) {
+            case 1:
+                String yesOpt = "Si";
+                String noOpt = "No";
+                Object[] options = {yesOpt, noOpt};
+                int n = JOptionPane.showOptionDialog(null,
+                        "Desea mostrar la informacion de la orden con el ID: " + IDToSearch,
+                        "Mostrar Orden",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        yesOpt
+                );
+                if (n == JOptionPane.YES_OPTION) {
+                    showOrdenGUI();
+                }
+                break;
+            case 2:
+                String okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "No se encontro ninguna orden con el ID: " + IDToSearch,
+                        "No se encontro la orden",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
+            case 3:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Alguna de la informacion ingresada esta errada \nPor favor verifica y vuelve a digitar",
+                        "Información Errada",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnShowListOrder){
+        if(e.getSource() == btnShowListOrden){
             System.out.println("Click Show List Btn");
-            ShowTableOrder();
-            handler.getBaseManager().addRow(4);
+            ShowTableOrden();
         }
         if(e.getSource() == btnAddOrdenMenu){
-            System.out.println("Click Agg Orden Btn");
+            System.out.println("Click Agg Orden Menu");
             AddUnaOrdenGUI();
         }
-        if(e.getSource() == txtIDOrder){
+        if(e.getSource() == txtIDOrden){
             System.out.println("Enter en el text ID Orden a buscar");
-            IDToSearch = Integer.parseInt(txtIDOrder.getText());
+            IDToSearch = Integer.parseInt(txtIDOrden.getText());
         }
-        if(e.getSource() == btnSearchOrder){
-            System.out.println("Searching");
+        if(e.getSource() == btnSearchOrden){
+            System.out.println("Searching Orden");
+            IDToSearch = Integer.parseInt(txtIDOrden.getText());
+            if(isTxtValid(2)){
+                showDialog(1);
+            }else{
+                showDialog(2);
+            }
+            clearTxtField(txtIDOrden);
         }
         if(e.getSource() == btnAtrasOrden){
-            System.out.println("Click btn Atras");
+            System.out.println("Click btn Atras Orden");
             removeAll();
             principalGUI();
             handler.getPrincipalGUI().actionPerformed(e);
         }
-        if(e.getSource() == btnCrearOrder) {
+        if(e.getSource() == btnCrearOrden) {
             addProductToArray();
-            //int idCliente, String tipoCelebracion,
-            // String tipoCombo, String empleadosEncargados,
-            // int valorTotal, String descripcion,
-            // ArrayList<Boolean> productos
-            handler.getDisplay().addOrder(Integer.parseInt(txtIDCliente.getText()), tipoCeleb, tipoCom,
-                                           txtEmpleadosEncargados.getText(), calcularValorTotal(),
-                                            txADescripcion.getText(), productos);
-            showOrderGUI();
+            IDToSearch = Integer.parseInt(txtIDCliente.getText());
+            if(isTxtValid(1)){
+                handler.getDisplay().addOrder(Integer.parseInt(txtIDCliente.getText()), tipoCeleb, tipoCom,
+                        txtEmpleadosEncargados.getText(), calcularValorTotal(),
+                        txADescripcion.getText(), productos);
+                AddUnaOrdenGUI();
+            }else{
+                int i = productos.toArray().length - 1;
+                System.out.println(i);
+                while(i >= 0){
+                    System.out.println(productos.remove(i));
+                    i--;
+                }
+            }
+        }
+        if(e.getSource() == btnCambiarEstado){
+            antEstado = orden.getEstado();
+            if(!antEstado.equals("Entregado")){
+                sgtEstado = "Asignado";
+                if(lblEstado.getText().equals("Asignado")){
+                    sgtEstado = "En Progreso";
+                }else if (lblEstado.getText().equals("En Progreso")){
+                    sgtEstado = "A Repartir";
+                }else if (lblEstado.getText().equals("A Repartir")){
+                    sgtEstado = "Entregado";
+                }
+                handler.getBaseManager().updateOrdenEstado(sgtEstado,lblID.getText());
+                orden.setEstado(sgtEstado);
+                showOrdenGUI();
+            }
+        }
+        if(e.getSource() == btnAtrasVisualizarOrden){
+            System.out.println("Atras visualizar Orden");
+            ShowTableOrden();
         }
     }
 
@@ -325,7 +530,12 @@ public class OrdenGUI extends GUIP implements ItemListener {
         productos.add(5, CBGalletas.isSelected());
     }
 
-    private void tableOrderMouseClicked(MouseEvent evt) {
-
+    public void tableOrderMouseClicked(MouseEvent e) {
+        if(e.getClickCount() == 1){
+            JTable receptor = (JTable) e.getSource();
+            IDToSearch = Integer.parseInt(receptor.getModel().getValueAt(receptor.getSelectedRow(), 0).toString());
+            showDialog(1);
+        }
     }
+
 }

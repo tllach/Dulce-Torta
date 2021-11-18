@@ -76,8 +76,6 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
 
         positionX = this.getX();
         positionY = this.getY();
-        System.out.println(positionX);
-        System.out.println(positionY);
 
         lblBackground.setIcon(new ImageIcon(urlBackground));
         lblBackground.setBounds(positionX, positionY, 1000,500);
@@ -90,6 +88,11 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
 
         addToJPanel(lblBackground, btnBalanceG, btnGastosAdmin);
         buttonTransparent(btnBalanceG, btnGastosAdmin);
+    }
+
+    @Override
+    public boolean isTxtValid(int opc) {
+        return false;
     }
 
     public void ShowGastosAdministrador(){

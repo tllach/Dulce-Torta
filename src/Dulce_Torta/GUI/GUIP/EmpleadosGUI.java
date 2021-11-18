@@ -66,6 +66,11 @@ public class EmpleadosGUI extends GUIP implements ItemListener {
         buttonTransparent(btnAddClienteMenu, btnShowList);
     }
 
+    @Override
+    public boolean isTxtValid(int opc) {
+        return false;
+    }
+
     public void showTablaCliente(){
         removeAll();
         //declaration

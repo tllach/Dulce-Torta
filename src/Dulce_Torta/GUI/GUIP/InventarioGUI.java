@@ -45,8 +45,6 @@ public class InventarioGUI extends GUIP implements ItemListener {
 
         positionX = this.getX();
         positionY = this.getY();
-        System.out.println(positionX);
-        System.out.println(positionY);
 
         lblBackground.setIcon(new ImageIcon(urlBackground));
         lblBackground.setBounds(positionX, positionY, 1000,500);
@@ -60,6 +58,12 @@ public class InventarioGUI extends GUIP implements ItemListener {
         addToJPanel(lblBackground, btnListaInsumos, btnAñadirInsumo);
         buttonTransparent(btnAñadirInsumo, btnListaInsumos);
     }
+
+    @Override
+    public boolean isTxtValid(int opc) {
+        return false;
+    }
+
     public void ShowListaInsumo() {
         btnAtras = new JButton();
         txtSearch = new JTextField();
@@ -156,7 +160,8 @@ public class InventarioGUI extends GUIP implements ItemListener {
         btnAtras.addActionListener(this);
         btnAgregar.addActionListener(this);
 
-        addToJPanel(lblBackground, txtCantidadInsumo, txtNombreInsumo, txtValorInsumo, btnAtras, btnAgregar);
+        addToJPanel(lblBackground, txtCantidadInsumo, txtNombreInsumo,
+                    txtValorInsumo, btnAtras, btnAgregar);
         buttonTransparent(btnAtras, btnAgregar);
     }
     private void changeBackground(String url){

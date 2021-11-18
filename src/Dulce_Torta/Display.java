@@ -158,8 +158,9 @@ public class Display implements Runnable {
         orden.setDescripcion(descripcion);
         orden.setProductos(productos);
         dataBaseManager.addRegistroOrden(orden);
-        //manager.getCliente(idCliente).addToLasFacturas(orden);
-        //manager.addOrden(orden);
+        orden.setIDVenta(manager.getCountOrden());
+        manager.getCliente(idCliente).addToLasFacturas(orden);
+        manager.addOrden(orden);
     }
 
     public void addEmpleado(){

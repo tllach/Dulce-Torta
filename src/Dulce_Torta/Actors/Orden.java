@@ -9,7 +9,7 @@ public class Orden {
 
     private Handler handler;
     private int IDVenta;
-    private Date fechaVenta;
+    private String  fechaVenta;
     private String estado;
     private int valorTotal;
     private String tipoCelebracion;
@@ -22,6 +22,7 @@ public class Orden {
 
     public Orden(Handler handler) {
         this.handler = handler;
+        System.out.println("Orden Creada");
     }
 
     public void setEmpleadosEncargados(String names) {
@@ -56,11 +57,11 @@ public class Orden {
         this.IDVenta = IDVenta;
     }
 
-    public Date getFechaVenta() {
+    public String getFechaVenta() {
         return fechaVenta;
     }
 
-    public void setFechaVenta(Date fechaVenta) {
+    public void setFechaVenta(String fechaVenta) {
         this.fechaVenta = fechaVenta;
     }
 
