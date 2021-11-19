@@ -1,6 +1,5 @@
 package Dulce_Torta.Actors;
 
-import Dulce_Torta.Actors.Enums.TipoEmpleado;
 import Dulce_Torta.Handler;
 
 import java.text.SimpleDateFormat;
@@ -11,7 +10,7 @@ import java.util.Date;
 public class Empleado extends Persona{
 
     private String fechaIngreso;
-    private TipoEmpleado tipoEmpleado;
+    private String tipoEmpleado;
     private int sueldo;
     private ArrayList<Orden> lasFacturas;
 
@@ -22,15 +21,26 @@ public class Empleado extends Persona{
         Date currentDate = new Date();
         SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MMM/yyyy");
         fechaIngreso = dateFormat.format(currentDate);
-        System.out.println(fechaIngreso);
+    }
+
+    public void setFechaIngreso(String fe){
+        this.fechaIngreso = fe;
     }
 
     public String getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public TipoEmpleado getTipoEmpleado(){
+    public void setTipoEmpleado(String tipoEmpleado) {
+        this.tipoEmpleado = tipoEmpleado;
+    }
+
+    public String getTipoEmpleado(){
         return tipoEmpleado;
+    }
+
+    public void setSueldo(int sueldo){
+        this.sueldo = sueldo;
     }
 
     public int getSueldo(){

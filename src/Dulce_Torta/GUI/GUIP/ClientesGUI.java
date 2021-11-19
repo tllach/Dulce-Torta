@@ -26,12 +26,11 @@ public class ClientesGUI extends GUIP implements ItemListener {
     JComboBox tipoDocBox;
     JButton btnAtrasCliente, btnAggCliente;
     String tipoDoc;
-    JLabel textID;
 
     //varibles a usar para mostrar un cliente
+    Cliente cliente;
     JLabel lblNombre, lblApellidos, lblCelular, lblTipoIdentidad, lblNroDoc, lblDireccion, lblCorreo;
     JButton btnAtrasCliente2;
-    ArrayList<String> infoCliente;
 
     public ClientesGUI(Handler handler, int width, int height) {
         super(handler, width, height);
@@ -218,19 +217,7 @@ public class ClientesGUI extends GUIP implements ItemListener {
 
         btnAtrasCliente2.addActionListener(this);
 
-        /**infoCliente = handler.getBaseManager().showRegistroClientes(IdToSearch);
-
-        lblID.setText(String.valueOf(IdToSearch));
-        lblNombre.setText(infoCliente.get(0));
-        lblApellidos.setText(infoCliente.get(1));
-        lblTipoIdentidad.setText(infoCliente.get(2));
-        lblNroDoc.setText(infoCliente.get(3));
-        lblCelular.setText(infoCliente.get(4));
-        lblDireccion.setText(infoCliente.get(5));
-        lblCorreo.setText(infoCliente.get(6));
-         **/
-
-        Cliente cliente = handler.getManager().getCliente(IdToSearch);
+        cliente = handler.getManager().getCliente(IdToSearch);
 
         lblID.setText(String.valueOf(cliente.getID()));
         lblNombre.setText(cliente.getNombre());

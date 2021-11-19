@@ -69,8 +69,25 @@ public class DataBaseManager {
             throwables.printStackTrace();
         }
     }
-    //para cuando se inicice el programa se llene el Hashmap de clientes
 
+    public void addRegistroEmpleado(Empleado empleado){
+        st = con.prepareStatement("INSERT INTO Empleados (ID_Empleado, Nombre, Apellidos, TipoDoc, NumDoc, Direccion, Celular, FechaIngreso, TipoEmpleado, Sueldo) VALUES (null, ?, ?, ?, ?, ?, ?, date('now'), ?, ?)");
+        try{
+            st.setString(1, empleado.getNombre());
+            st.setString(2, empleado.getApellidos());
+            st.setString(3, empleado.getTipoDoc());
+            st.setLong(4, empleado.getNroDoc());
+            st.setString(5, empleado.getDireccion());
+            st.setLong(6, empleado.getCelular());
+            st.setString(7, empleado.getTipoEmpleado());
+            st.setInt(8, empleado.getSueldo());
+            st.execute();
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
+    //para cuando se inicice el programa se llene el Hashmap de clientes
     public void putAllRegistros(){
         int i = 0;
         String[] names = {"Clientes", "Empleados", "Ordenes", "Insumos"};
@@ -97,25 +114,25 @@ public class DataBaseManager {
                 }
             }
             if(i == 1){
-                /**
                 while(true){
                     try {
                         if (!r.next()) break;
                         Empleado empleado = new Empleado(handler);
-                        empleado.setID(Integer.parseInt(r.getString( "ID_Cliente")));
+                        empleado.setID(r.getInt("ID_Empleado"));
                         empleado.setNombre(r.getString("Nombre"));
                         empleado.setApellidos(r.getString("Apellidos"));
                         empleado.setTipoDoc(r.getString("TipoDoc"));
-                        empleado.setNroDoc(Long.parseLong(r.getString("NumDoc")));
+                        empleado.setNroDoc(r.getLong("NumDoc"));
                         empleado.setDireccion(r.getString("Direccion"));
-                        empleado.setCelular(Long.parseLong(r.getString("Celular")));
-                        empleado.setFe
-                        handler.getManager().addCliente(cliente);
+                        empleado.setCelular(r.getLong("Celular"));
+                        empleado.setFechaIngreso(r.getString("FechaIngreso"));
+                        empleado.setTipoEmpleado(r.getString("TipoEmpleado"));
+                        empleado.setSueldo(r.getInt("Sueldo"));
+                        handler.getManager().addEmpleado(empleado);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
-                 **/
             }
             if(i == 2){
                 while(true){
@@ -172,10 +189,10 @@ public class DataBaseManager {
         return infoCliente;
     }
 
-    public void deleteRegistroEmpleado(){
+    public void deleteRegistroEmpleado(int id){
         try{
-            PreparedStatement st = con.prepareStatement("DELETE FROM Clientes WHERE ID=?");
-            st.setInt(1, handler.getDisplay().clientesGUI.getIdToSearch());
+            PreparedStatement st = con.prepareStatement("DELETE FROM Empleados WHERE ID_Empleado=?");
+            st.setInt(1, id);
             st.execute();
         }catch(SQLException e){
             System.out.println(e);
@@ -204,7 +221,11 @@ public class DataBaseManager {
                             r.getLong("Celular")};
                     handler.getClientesGUI().addRow(info);
                 }else if(opc == 2){
-                    System.out.println("...");
+                    info = new Object[]{r.getInt("ID_Empleado"), r.getString("Nombre"), r.getString("Apellidos"),
+                                        r.getString("TipoEmpleado"),r.getLong("Celular"), r.getString("Direccion"),
+                                        r.getString("TipoDoc"), r.getString("NumDoc"), r.getString("FechaIngreso"),
+                                        r.getString("Sueldo")};
+                    handler.getEmpleadosGUI().addRow(info);
                 }else if(opc == 3){
                     System.out.println("...");
                 }else if(opc == 4){

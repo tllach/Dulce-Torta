@@ -12,21 +12,22 @@ public class Manager{
     private HashMap<Integer,Cliente> Clientes;
     private HashMap<Integer, Orden> Ordenes;
     private HashMap<Integer, Empleado> Empleados;
-    private int countOrder;
+    private int countOrder, countCliente, countEmpleado;
 
     public Manager(Handler handler){
         this.handler = handler;
         Clientes = new HashMap<Integer, Cliente>();
         Empleados = new HashMap<Integer, Empleado>();
         Ordenes = new HashMap<Integer, Orden>();
-        countOrder = 1;
+        countOrder = countCliente = countEmpleado = 1;
     }
 
     public void setAllClientes(){
         handler.getBaseManager().putAllRegistros();
     }
 
-    public void addCliente(Cliente cliente){
+    public void addCliente(Cliente cliente) {
+        countCliente++;
         Clientes.put(cliente.getID(), cliente);
     }
 
@@ -35,6 +36,7 @@ public class Manager{
     }
 
     public void addEmpleado(Empleado empleado){
+        countEmpleado++;
         Empleados.put(empleado.getID(), empleado);
     }
 
@@ -53,5 +55,13 @@ public class Manager{
 
     public int getCountOrden(){
         return countOrder;
+    }
+
+    public int getCountEmpleado(){
+        return countEmpleado;
+    }
+
+    public int getCountCliente(){
+        return countCliente;
     }
 }
