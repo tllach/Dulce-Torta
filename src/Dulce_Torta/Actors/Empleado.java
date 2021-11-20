@@ -11,12 +11,12 @@ public class Empleado extends Persona{
 
     private String fechaIngreso;
     private String tipoEmpleado;
+    private String contrasena;
     private int sueldo;
     private ArrayList<Orden> lasFacturas;
 
     public Empleado(Handler handler) {
         super(handler);
-        System.out.println("Empleado creado");
         lasFacturas = new ArrayList<Orden>();
         Date currentDate = new Date();
         SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MMM/yyyy");
@@ -37,6 +37,14 @@ public class Empleado extends Persona{
 
     public String getTipoEmpleado(){
         return tipoEmpleado;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getContrasena(){
+        return contrasena;
     }
 
     public void setSueldo(int sueldo){

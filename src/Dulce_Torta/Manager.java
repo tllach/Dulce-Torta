@@ -44,6 +44,15 @@ public class Manager{
         return Empleados.get(idEmpleado);
     }
 
+    public Empleado getEmpleado(long numDocEmpleado){
+        for(Empleado empleado : Empleados.values()){
+            if(empleado.getNroDoc() == numDocEmpleado){
+                return empleado;
+            }
+        }
+        return null;
+    }
+
     public void addOrden(Orden orden){
         countOrder++;
         Ordenes.put(orden.getIDVenta(), orden);
