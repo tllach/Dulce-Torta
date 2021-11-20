@@ -71,6 +71,7 @@ public class Display implements Runnable {
 
         clientesGUI = new ClientesGUI(handler, 1000, 530);
         ordenGUI = new OrdenGUI(handler, 1000, 530);
+        empleadosGUI = new EmpleadosGUI(handler, 1000, 530);
         contabilidadGUI= new ContabilidadGUI(handler, 1000, 530);
         inventarioGUI= new InventarioGUI(handler, 1000, 530);
 
@@ -163,10 +164,19 @@ public class Display implements Runnable {
         manager.addOrden(orden);
     }
 
-    public void addEmpleado(){
+    public void addEmpleado(String nombre, String apellidos, String tipoDoc, long nroDocumento, String direccion, long celular, String tipoEmpleado, int sueldo){
         Empleado empleado = new Empleado(handler);
-
-
+        empleado.setNombre(nombre);
+        empleado.setApellidos(apellidos);
+        empleado.setTipoDoc(tipoDoc);
+        empleado.setNroDoc(nroDocumento);
+        empleado.setDireccion(direccion);
+        empleado.setCelular(celular);
+        empleado.setTipoEmpleado(tipoEmpleado);
+        empleado.setSueldo(sueldo);
+        dataBaseManager.addRegistroEmpleado((empleado));
+        empleado.setID(manager.getCountEmpleado());
+        manager.addEmpleado(empleado);
     }
 
     public JFrame getFrame(){
