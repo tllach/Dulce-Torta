@@ -22,7 +22,7 @@ public class Manager{
         countOrder = countCliente = countEmpleado = 1;
     }
 
-    public void setAllClientes(){
+    public void setAllRegistros(){
         handler.getBaseManager().putAllRegistros();
     }
 
