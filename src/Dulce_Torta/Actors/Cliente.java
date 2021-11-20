@@ -11,7 +11,6 @@ public class Cliente extends Persona{
 
     public Cliente(Handler handler) {
         super(handler);
-        System.out.println("Cliente creado");
         lasFacturas = new HashMap<Integer, Orden>();
     }
 

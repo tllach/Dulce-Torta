@@ -22,7 +22,6 @@ public class Orden {
 
     public Orden(Handler handler) {
         this.handler = handler;
-        System.out.println("Orden Creada");
     }
 
     public void setEmpleadosEncargados(String names) {

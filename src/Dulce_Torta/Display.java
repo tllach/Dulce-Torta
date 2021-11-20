@@ -6,11 +6,12 @@ import Dulce_Torta.Actors.Enums.TipoDocumento;
 import Dulce_Torta.Databases.DataBaseManager;
 import Dulce_Torta.GUI.*;
 import Dulce_Torta.GUI.GUIP.*;
+import Dulce_Torta.GUI.RestablecerContraseña.AnuncioRestablecer;
+import Dulce_Torta.GUI.RestablecerContraseña.RestablecerCntaGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Display implements Runnable {
 
@@ -174,6 +175,7 @@ public class Display implements Runnable {
         empleado.setCelular(celular);
         empleado.setTipoEmpleado(tipoEmpleado);
         empleado.setSueldo(sueldo);
+        empleado.setContrasena(String.valueOf(nroDocumento));
         dataBaseManager.addRegistroEmpleado((empleado));
         empleado.setID(manager.getCountEmpleado());
         manager.addEmpleado(empleado);

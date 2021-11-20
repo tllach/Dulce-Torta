@@ -71,7 +71,7 @@ public class DataBaseManager {
     }
 
     public void addRegistroEmpleado(Empleado empleado){
-        st = con.prepareStatement("INSERT INTO Empleados (ID_Empleado, Nombre, Apellidos, TipoDoc, NumDoc, Direccion, Celular, FechaIngreso, TipoEmpleado, Sueldo) VALUES (null, ?, ?, ?, ?, ?, ?, date('now'), ?, ?)");
+        st = con.prepareStatement("INSERT INTO Empleados (ID_Empleado, Nombre, Apellidos, TipoDoc, NumDoc, Direccion, Celular, FechaIngreso, TipoEmpleado, Sueldo, Contrasena) VALUES (null, ?, ?, ?, ?, ?, ?, date('now'), ?, ?, ?)");
         try{
             st.setString(1, empleado.getNombre());
             st.setString(2, empleado.getApellidos());
@@ -81,6 +81,7 @@ public class DataBaseManager {
             st.setLong(6, empleado.getCelular());
             st.setString(7, empleado.getTipoEmpleado());
             st.setInt(8, empleado.getSueldo());
+            st.setString(9, empleado.getContrasena());
             st.execute();
         }catch(SQLException throwables){
             throwables.printStackTrace();
@@ -189,9 +190,38 @@ public class DataBaseManager {
         return infoCliente;
     }
 
+    public boolean canIniciarSesion(long id, String contrasena){
+
+        try {
+            String statement = "SELECT Contrasena FROM Empleados WHERE NumDoc=" + id;
+            r = con.resultSet(statement);
+            if(contrasena.equals(r.getString("Contrasena"))){
+                return true;
+            }else{
+                handler.getInicioSesionGUI().showDialog(1);
+            }
+        } catch (SQLException throwables) {
+            handler.getInicioSesionGUI().showDialog(2);
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateContrasenaEmpleado(long numDoc, String contraN){
+        try{
+            String statement = "UPDATE Empleados SET Contrasena = '" + contraN  +"' WHERE NumDoc =" + numDoc;
+            st = con.prepareStatement(statement);
+            st.execute();
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public void deleteRegistroEmpleado(int id){
         try{
-            PreparedStatement st = con.prepareStatement("DELETE FROM Empleados WHERE ID_Empleado=?");
+            st = con.prepareStatement("DELETE FROM Empleados WHERE ID_Empleado=?");
             st.setInt(1, id);
             st.execute();
         }catch(SQLException e){

@@ -50,6 +50,71 @@ public class InicioSesionGUI extends GUI{
          buttonTransparent(btnInicioSesion, btnRsbCtr);
     }
 
+    public boolean isTxtValid(int opc){
+        try{
+            StringBuilder contrasena = new StringBuilder();
+            //.getPassword can return NUllPointer
+            for(char a: txtCtr.getPassword()){
+                contrasena.append(a);
+            }
+            //check que los campos tengan algo
+            if(txtUsuario.getText().equals("") || contrasena.toString().equals("")){
+                showDialog(0);
+                return false;
+            }else{
+                return handler.getBaseManager().canIniciarSesion(Long.parseLong(txtUsuario.getText()), contrasena.toString());
+            }
+        }catch(Exception e){
+            showDialog(0);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void showDialog(int i){
+        String title = "Error iniciar sesion";
+        switch(i){
+            case 0:
+                String okOpt = "Ok";
+                Object[] options = {okOpt};
+                int n = JOptionPane.showOptionDialog(null,
+                        "Alguno de los dos campos esta vacio" ,
+                        title,
+                        JOptionPane.YES_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
+            case 1:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Contraseña Incorrecta",
+                        title,
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
+            case 2:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Usuario no encontrado",
+                        title,
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+            break;
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -58,6 +123,14 @@ public class InicioSesionGUI extends GUI{
             handler.getDisplay().changeBackGroundPanel(bgRestablecerC);
         }
         if(e.getSource() == btnInicioSesion){
+            /**
+            if(isTxtValid()){
+                handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel, handler.getDisplay().pantallaPrincipalGUI);
+                handler.getDisplay().changeBackGroundPanel(bgPrincipal);
+            }else{
+
+            }
+            **/
             handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel, handler.getDisplay().pantallaPrincipalGUI);
             handler.getDisplay().changeBackGroundPanel(bgPrincipal);
         }
