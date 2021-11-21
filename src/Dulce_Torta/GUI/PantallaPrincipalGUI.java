@@ -52,7 +52,6 @@ public class PantallaPrincipalGUI extends GUI{
 
         addToJPanel(btnInicio, btnClientes, btnOrdenes, btnEmpleados, btnContabilidad, btnInventario, btnMiPerfil);
         buttonTransparent(btnInicio, btnClientes, btnOrdenes, btnEmpleados, btnContabilidad, btnInventario, btnMiPerfil);
-
     }
 
 
@@ -76,7 +75,7 @@ public class PantallaPrincipalGUI extends GUI{
         }
         if(e.getSource() == btnContabilidad){
             System.out.println("Click Contabilidad");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().contabilidadGUI);
+            handler.getDisplay().addJpanelToMain(handler.getContabilidadGUI());
         }
         if(e.getSource() == btnInventario){
             System.out.println("Click Inventario");

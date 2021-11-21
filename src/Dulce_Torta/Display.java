@@ -6,6 +6,7 @@ import Dulce_Torta.Actors.Enums.TipoDocumento;
 import Dulce_Torta.Databases.DataBaseManager;
 import Dulce_Torta.GUI.*;
 import Dulce_Torta.GUI.GUIP.*;
+import Dulce_Torta.GUI.GUIP.Contabilidad.ContabilidadGUI;
 import Dulce_Torta.GUI.RestablecerContraseña.AnuncioRestablecer;
 import Dulce_Torta.GUI.RestablecerContraseña.RestablecerCntaGUI;
 

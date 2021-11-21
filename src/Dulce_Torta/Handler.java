@@ -4,6 +4,7 @@ import Dulce_Torta.Actors.Enums.TipoDocumento;
 import Dulce_Torta.Databases.DataBaseManager;
 import Dulce_Torta.GUI.*;
 import Dulce_Torta.GUI.GUIP.*;
+import Dulce_Torta.GUI.GUIP.Contabilidad.ContabilidadGUI;
 import Dulce_Torta.GUI.RestablecerContraseña.RestablecerCntaGUI;
 
 public class Handler {
@@ -33,6 +34,8 @@ public class Handler {
     public InicioSesionGUI getInicioSesionGUI(){ return display.inicioSesionGUI;}
 
     public RestablecerCntaGUI getRestablecerCntaGUI(){ return display.restablecerCntaGUI;}
+
+    public ContabilidadGUI getContabilidadGUI(){ return display.contabilidadGUI;}
 
     public TipoDocumento getTipoDocumento(){
        return display.tipoDoc;
