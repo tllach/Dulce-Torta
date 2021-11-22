@@ -1,6 +1,5 @@
 package Dulce_Torta.Actors;
 
-import Dulce_Torta.Actors.Enums.TipoDocumento;
 import Dulce_Torta.Handler;
 
 public abstract class Persona {

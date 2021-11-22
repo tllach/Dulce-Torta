@@ -80,7 +80,7 @@ public class RestablecerCntaGUI extends GUI {
                 //check exista un empleado con ese numDoc
                 empleado = handler.getManager().getEmpleado(Long.parseLong(txtDocID.getText()));
                 if(empleado != null){
-                    return handler.getBaseManager().updateContrasenaEmpleado(Long.parseLong(txtDocID.getText()), contrasenaN.toString());
+                    return handler.getDataManager().updateContrasenaEmpleado(Long.parseLong(txtDocID.getText()), contrasenaN.toString());
                 }else {
                     showDialog(2);
                 }

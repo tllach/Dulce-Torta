@@ -88,6 +88,38 @@ public class DataBaseManager {
         }
     }
 
+    public void addRegistroInsumo(Insumo insumo){
+        st = con.prepareStatement("INSERT INTO Insumos (ID_Insumo, Nombre, Cantidad, ValorUnitario) VALUES (null, ?, ?, ?)");
+        try{
+            st.setString(1,insumo.getNombre());
+            st.setInt(2, insumo.getCantidad());
+            st.setInt(3, insumo.getValorUnitario());
+            st.execute();
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
+    public void updateCantidadInsumo(int idInsumo, int cantidad, int valorUnitario){
+        String command = "UPDATE Insumos SET Cantidad = " + cantidad + ", ValorUnitario= "+ valorUnitario + " WHERE ID_Insumo= " + idInsumo;
+        st = con.prepareStatement(command);
+        try{
+            st.execute();
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
+    public void updateCantidadInsumo(int idInsumo, int cantidad){
+        String command = "UPDATE Insumos SET Cantidad = " + cantidad + " WHERE ID_Insumo= " + idInsumo;
+        st = con.prepareStatement(command);
+        try{
+            st.execute();
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
     //para cuando se inicice el programa se llene el Hashmap de clientes
     public void putAllRegistros(){
         int i = 0;
@@ -165,6 +197,22 @@ public class DataBaseManager {
                     }
                 }
             }
+            if(i == 3){
+                while(true){
+                    try{
+                        if(!r.next()) break;
+                        Insumo insumo = new Insumo(handler);
+                        insumo.setID(r.getInt("ID_Insumo"));
+                        insumo.setNombre(r.getString("Nombre"));
+                        insumo.setCantidad(r.getInt("Cantidad"));
+                        insumo.setValorUnitario(r.getInt("ValorUnitario"));
+                        handler.getManager().addInsumo(insumo);
+                        handler.getInventario().addInsumo(insumo);
+                    }catch(SQLException throwables){
+                        throwables.printStackTrace();
+                    }
+                }
+            }
             i++;
         }
     }
@@ -193,9 +241,11 @@ public class DataBaseManager {
     public boolean canIniciarSesion(long id, String contrasena){
 
         try {
-            String statement = "SELECT Contrasena FROM Empleados WHERE NumDoc=" + id;
+            String statement = "SELECT Contrasena, TipoEmpleado FROM Empleados WHERE NumDoc=" + id;
             r = con.resultSet(statement);
             if(contrasena.equals(r.getString("Contrasena"))){
+                handler.getInicioSesionGUI().setIDLogin(id);
+                handler.getInicioSesionGUI().setCargoLogin(r.getString("TipoEmpleado"));
                 return true;
             }else{
                 handler.getInicioSesionGUI().showDialog(1);
@@ -257,7 +307,9 @@ public class DataBaseManager {
                                         r.getString("Sueldo")};
                     handler.getEmpleadosGUI().addRow(info);
                 }else if(opc == 3){
-                    System.out.println("...");
+                    info = new Object[]{r.getInt("ID_Insumo"),r.getString("Nombre"), r.getInt("Cantidad"),
+                                        r.getInt("ValorUnitario")};
+                    handler.getInventarioGUI().addRow(info);
                 }else if(opc == 4){
                     info = new Object[]{r.getInt("ID_Venta"), r.getString("Estado"), r.getInt("ID_Cliente"),
                             r.getString("TipoCelebracion"),r.getString("TipoCombo"),

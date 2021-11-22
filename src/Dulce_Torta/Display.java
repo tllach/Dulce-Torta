@@ -2,7 +2,6 @@ package Dulce_Torta;
 
 import Dulce_Torta.Actors.*;
 
-import Dulce_Torta.Actors.Enums.TipoDocumento;
 import Dulce_Torta.Databases.DataBaseManager;
 import Dulce_Torta.GUI.*;
 import Dulce_Torta.GUI.GUIP.*;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class Display implements Runnable {
 
     private JFrame frame;
-    private JLayeredPane content;
+    public JLayeredPane content;
     private JLabel lblBackground;
 
     private JPanel backGroundPanel;
@@ -37,12 +36,16 @@ public class Display implements Runnable {
     public OrdenGUI ordenGUI;
     public ContabilidadGUI contabilidadGUI;
     public InventarioGUI inventarioGUI;
-
     public RestablecerCntaGUI restablecerCntaGUI;
     public AnuncioRestablecer anuncioRestablecer;
+    public MiPerfilGUI miPerfilGUI;
 
     public DataBaseManager dataBaseManager;
-    public TipoDocumento tipoDoc;
+
+    public Inventario inventario;
+
+    public long IDLogeado;
+    public String cargoLogeado;
 
     public Display(int width, int height) {
         this.width = width;
@@ -63,19 +66,21 @@ public class Display implements Runnable {
         dataBaseManager = new DataBaseManager(handler);
         manager = new Manager(handler);
 
+        inventario = new Inventario(handler, 5000);
+
         inicioSesionGUI = new InicioSesionGUI(handler, width, height);
         pantallaPrincipalGUI = new PantallaPrincipalGUI(handler, width, height);
         restablecerCntaGUI = new RestablecerCntaGUI(handler, width, height);
         ordenGUI = new OrdenGUI(handler, width, height);
-        contabilidadGUI= new ContabilidadGUI(handler,width,height);
-        inventarioGUI= new InventarioGUI(handler, width, height);
+        contabilidadGUI = new ContabilidadGUI(handler, width, height);
+        inventarioGUI = new InventarioGUI(handler, width, height);
         anuncioRestablecer = new AnuncioRestablecer(handler, width, height);
-
         clientesGUI = new ClientesGUI(handler, 1000, 530);
         ordenGUI = new OrdenGUI(handler, 1000, 530);
         empleadosGUI = new EmpleadosGUI(handler, 1000, 530);
-        contabilidadGUI= new ContabilidadGUI(handler, 1000, 530);
-        inventarioGUI= new InventarioGUI(handler, 1000, 530);
+        contabilidadGUI = new ContabilidadGUI(handler, 1000, 530);
+        inventarioGUI = new InventarioGUI(handler, 1000, 530);
+        miPerfilGUI = new MiPerfilGUI(handler, 1000, 530);
 
         lastJPanel = inicioSesionGUI;
         lastJPanelInMain = new JPanel();
@@ -135,11 +140,12 @@ public class Display implements Runnable {
         cliente.setCelular(celular);
         cliente.setCorreo(correo);
         dataBaseManager.addRegistroCliente(cliente);
+        cliente.setID(manager.getCountCliente());
         manager.addCliente(cliente);
     }
 
-    public void showInfoCliente(int idCliente){
-        Cliente cliente= manager.getCliente(idCliente);
+    public void showInfoCliente(int idCliente) {
+        Cliente cliente = manager.getCliente(idCliente);
         System.out.println("ID:" + cliente.getID());
         System.out.println("Nombre: " + cliente.getNombre());
         System.out.println("Apellidos: " + cliente.getApellidos());
@@ -166,7 +172,7 @@ public class Display implements Runnable {
         manager.addOrden(orden);
     }
 
-    public void addEmpleado(String nombre, String apellidos, String tipoDoc, long nroDocumento, String direccion, long celular, String tipoEmpleado, int sueldo){
+    public void addEmpleado(String nombre, String apellidos, String tipoDoc, long nroDocumento, String direccion, long celular, String tipoEmpleado, int sueldo) {
         Empleado empleado = new Empleado(handler);
         empleado.setNombre(nombre);
         empleado.setApellidos(apellidos);
@@ -182,12 +188,41 @@ public class Display implements Runnable {
         manager.addEmpleado(empleado);
     }
 
-    public JFrame getFrame(){
+    public void addInsumo(String nombre, int cantidad, int valorUnitario) {
+        Insumo insumo = new Insumo(handler);
+        insumo.setNombre(nombre);
+        insumo.setCantidad(cantidad);
+        insumo.setValorUnitario(valorUnitario);
+        dataBaseManager.addRegistroInsumo(insumo);
+        insumo.setID(manager.getCountInsumo());
+        manager.addInsumo(insumo);
+        inventario.addInsumo(insumo);
+    }
+
+    public JFrame getFrame() {
         return frame;
     }
 
     @Override
     public void run() {
         frame.setVisible(true);
+    }
+
+    public void setIDLogeado(long idLogin) {
+        this.IDLogeado = idLogin;
+        System.out.println(IDLogeado);
+    }
+
+    public void setCargoLogeado(String cargoLogin) {
+        this.cargoLogeado = cargoLogin;
+        System.out.println(cargoLogeado);
+    }
+
+    public String getCargoLogeado() {
+        return this.cargoLogeado;
+    }
+
+    public long getIDLogeado() {
+        return this.IDLogeado;
     }
 }

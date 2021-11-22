@@ -1,6 +1,7 @@
 package Dulce_Torta.GUI.GUIP;
 
 import Dulce_Torta.Actors.Cliente;
+import Dulce_Torta.Actors.Insumo;
 import Dulce_Torta.Actors.Orden;
 import Dulce_Torta.Handler;
 
@@ -14,37 +15,37 @@ import java.util.HashMap;
 public class OrdenGUI extends GUIP implements ItemListener {
 
     //variables a usar al principio;p
-    JButton btnShowListOrden;
-    JButton btnAddOrdenMenu;
+    private JButton btnShowListOrden;
+    private JButton btnAddOrdenMenu;
 
     //variables a usar en la lista orden
-    JButton btnSearchOrden;
-    JTextField txtIDOrden;
-    JTable tableOrder;
-    DefaultTableModel modelTable;
-    JScrollPane scrollPane;
-    int IDToSearch;
+    private JButton btnSearchOrden;
+    private JTextField txtIDOrden;
+    private JTable tableOrder;
+    private DefaultTableModel modelTable;
+    private JScrollPane scrollPane;
+    private int IDToSearch;
 
     // variables a usar al momento de crear una orden D:
-    JTextField txtIDCliente, txtEmpleadosEncargados;
-    JComboBox tipoCelebracion, tipoCombo;
-    JCheckBox CBTorta, CBTortaML, CBCupcake;
-    JCheckBox CBBrownie, CBCakepops, CBGalletas;
-    JTextArea txADescripcion;
-    JButton btnAtrasOrden, btnCrearOrden;
-    String tipoCeleb, tipoCom;
-    ArrayList<Boolean> productos;
-    HashMap<String, Integer> tipoCelebracionPrecio;
-    int valorTotal;
+    private JTextField txtIDCliente, txtEmpleadosEncargados;
+    private JComboBox tipoCelebracion, tipoCombo;
+    private JCheckBox CBTorta, CBTortaML, CBCupcake;
+    private JCheckBox CBBrownie, CBCakepops, CBGalletas;
+    private JTextArea txADescripcion;
+    private JButton btnAtrasOrden, btnCrearOrden;
+    private String tipoCeleb, tipoCom;
+    private ArrayList<Boolean> productos;
+    private HashMap<String, Integer> tipoCelebracionPrecio;
+    private int valorTotal;
 
     // variables visualizar orden GUI
-    Orden orden;
-    JLabel lblIDCliente, lblDireccion, lblProductos;
-    JLabel lblCelular, lblTipoCom, lblTipoCel, lblEstado;
-    JLabel lblEmpleadosEncargados, lblDescripcion, lblValorTotal;
-    JButton btnAtrasVisualizarOrden, btnCambiarEstado;
-    String antEstado, sgtEstado;
-    String[] TipoEstado;
+    private Orden orden;
+    private JLabel lblIDCliente, lblDireccion, lblProductos;
+    private JLabel lblCelular, lblTipoCom, lblTipoCel, lblEstado;
+    private JLabel lblEmpleadosEncargados, lblDescripcion, lblValorTotal;
+    private JButton btnAtrasVisualizarOrden, btnCambiarEstado;
+    private String antEstado, sgtEstado;
+    private String[] TipoEstado;
 
     public OrdenGUI(Handler handler, int width, int height) {super(handler, width, height);}
 
@@ -103,7 +104,7 @@ public class OrdenGUI extends GUIP implements ItemListener {
         txtSetBorder(txtIDOrden);
 
         createTable();
-        handler.getBaseManager().addRow(4);
+        handler.getDataManager().addRow(4);
     }
 
     public void createTable(){
@@ -176,11 +177,11 @@ public class OrdenGUI extends GUIP implements ItemListener {
         //inicializar
         changeBackground("src/Dulce_Torta/Assets/Orden/AgregarOrden.png");
 
-        tipoCelebracionPrecio.put("Bodas", 50000);
-        tipoCelebracionPrecio.put("Cumpleaños", 0);
-        tipoCelebracionPrecio.put("BabyShower", 20000);
-        tipoCelebracionPrecio.put("Revelacion Genero",10000);
-        tipoCelebracionPrecio.put("Quinceañero", 40000);
+        tipoCelebracionPrecio.put("Bodas", 150000);
+        tipoCelebracionPrecio.put("Cumpleaños", 30000);
+        tipoCelebracionPrecio.put("BabyShower", 70000);
+        tipoCelebracionPrecio.put("Revelacion Genero", 50000);
+        tipoCelebracionPrecio.put("Quinceañero", 130000);
         tipoCelebracionPrecio.put("Despedida Soltera", 30000);
 
         txtIDCliente.setBounds(positionX + 240, positionY + 38 , 230, 30);
@@ -330,21 +331,76 @@ public class OrdenGUI extends GUIP implements ItemListener {
         valorTotal = 0;
         //String tipoCelebracion, ArrayList<Boolean> productos
         valorTotal += tipoCelebracionPrecio.get(tipoCeleb);
-        int i = 0;
+        int i = 1;
         for(boolean b: productos){
-            if(i == 0 && b){
+            Insumo insumoH = handler.getManager().getInsumo(1);
+            Insumo insumoL = handler.getManager().getInsumo(2);
+            Insumo insumoF = handler.getManager().getInsumo(3);
+            Insumo insumoHue = handler.getManager().getInsumo(4);
+            Insumo insumoA = handler.getManager().getInsumo(5);
+            Insumo insumoAG = handler.getManager().getInsumo(6);
+            Insumo insumoC = handler.getManager().getInsumo(7);
+            Insumo insumoEV = handler.getManager().getInsumo(8);
+            Insumo insumoCM = handler.getManager().getInsumo(9);
+            Insumo insumoCo = handler.getManager().getInsumo(10);
+            Insumo insumoM = handler.getManager().getInsumo(11);
+            if(i == 1 && b){
+                insumoH.setCantidad(insumoH.getCantidad() - 2);
+                insumoL.setCantidad(insumoL.getCantidad() - 1);
+                insumoF.setCantidad(insumoF.getCantidad() - 1);
+                insumoHue.setCantidad(insumoHue.getCantidad() - 12);
+                insumoA.setCantidad(insumoA.getCantidad() - 1);
+                insumoM.setCantidad(insumoM.getCantidad() - 1);
                 valorTotal += 100000;
-            }else if(i == 1 && b){
-                valorTotal += 70000;
             }else if(i == 2 && b){
-                valorTotal += 40000;
+                insumoH.setCantidad(insumoH.getCantidad() - 1);
+                insumoL.setCantidad(insumoL.getCantidad() - 1);
+                insumoA.setCantidad(insumoA.getCantidad() - 1);
+                insumoF.setCantidad(insumoF.getCantidad() - 1);
+                insumoHue.setCantidad(insumoHue.getCantidad() - 6);
+                insumoM.setCantidad(insumoM.getCantidad() - 1);
+                insumoCo.setCantidad(insumoCo.getCantidad() - 1);
+                valorTotal += 70000;
             }else if(i == 3 && b){
-                valorTotal += 60000;
-            }else if(i == 4 && b){
+                insumoH.setCantidad(insumoH.getCantidad() - 1);
+                insumoL.setCantidad(insumoL.getCantidad() - 1);
+                insumoA.setCantidad(insumoA.getCantidad() - 1);
+                insumoHue.setCantidad(insumoHue.getCantidad() - 8);
+                insumoCM.setCantidad(insumoCM.getCantidad() - 1);
                 valorTotal += 40000;
+            }else if(i == 4 && b){
+                insumoH.setCantidad(insumoH.getCantidad() - 1);
+                insumoL.setCantidad(insumoL.getCantidad() - 1);
+                insumoA.setCantidad(insumoA.getCantidad() - 1);
+                insumoHue.setCantidad(insumoHue.getCantidad() - 10);
+                valorTotal += 60000;
             }else if(i == 5 && b){
+                insumoH.setCantidad(insumoH.getCantidad() - 1);
+                insumoL.setCantidad(insumoL.getCantidad() - 1);
+                insumoA.setCantidad(insumoA.getCantidad() - 1);
+                insumoHue.setCantidad(insumoHue.getCantidad() - 2);
+                insumoAG.setCantidad(insumoAG.getCantidad() - 1);
+                insumoC.setCantidad(insumoC.getCantidad() - 1);
+                valorTotal += 40000;
+            }else if(i == 6 && b){
+                insumoH.setCantidad(insumoH.getCantidad() - 1);
+                insumoL.setCantidad(insumoL.getCantidad() - 1);
+                insumoA.setCantidad(insumoA.getCantidad() - 1);
+                insumoEV.setCantidad(insumoEV.getCantidad() - 1);
+                insumoHue.setCantidad(insumoHue.getCantidad() - 3);
                 valorTotal += 40000;
             }
+            handler.getDataManager().updateCantidadInsumo(1, insumoH.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(2, insumoL.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(3, insumoF.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(4, insumoHue.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(5, insumoA.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(6, insumoAG.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(7, insumoC.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(8, insumoEV.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(9, insumoCM.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(10, insumoCo.getCantidad());
+            handler.getDataManager().updateCantidadInsumo(11, insumoM.getCantidad());
             i++;
         }
         return valorTotal;
@@ -446,19 +502,15 @@ public class OrdenGUI extends GUIP implements ItemListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnShowListOrden){
-            System.out.println("Click Show List Btn");
             ShowTableOrden();
         }
         if(e.getSource() == btnAddOrdenMenu){
-            System.out.println("Click Agg Orden Menu");
             AddUnaOrdenGUI();
         }
         if(e.getSource() == txtIDOrden){
-            System.out.println("Enter en el text ID Orden a buscar");
             IDToSearch = Integer.parseInt(txtIDOrden.getText());
         }
         if(e.getSource() == btnSearchOrden){
-            System.out.println("Searching Orden");
             IDToSearch = Integer.parseInt(txtIDOrden.getText());
             if(isTxtValid(2)){
                 showDialog(1);
@@ -468,26 +520,18 @@ public class OrdenGUI extends GUIP implements ItemListener {
             clearTxtField(txtIDOrden);
         }
         if(e.getSource() == btnAtrasOrden){
-            System.out.println("Click btn Atras Orden");
             removeAll();
             principalGUI();
             handler.getPrincipalGUI().actionPerformed(e);
         }
         if(e.getSource() == btnCrearOrden) {
-            addProductToArray();
             IDToSearch = Integer.parseInt(txtIDCliente.getText());
             if(isTxtValid(1)){
+                addProductToArray();
                 handler.getDisplay().addOrder(Integer.parseInt(txtIDCliente.getText()), tipoCeleb, tipoCom,
                         txtEmpleadosEncargados.getText(), calcularValorTotal(),
                         txADescripcion.getText(), productos);
                 AddUnaOrdenGUI();
-            }else{
-                int i = productos.toArray().length - 1;
-                System.out.println(i);
-                while(i >= 0){
-                    System.out.println(productos.remove(i));
-                    i--;
-                }
             }
         }
         if(e.getSource() == btnCambiarEstado){
@@ -501,7 +545,7 @@ public class OrdenGUI extends GUIP implements ItemListener {
                 }else if (lblEstado.getText().equals("A Repartir")){
                     sgtEstado = "Entregado";
                 }
-                handler.getBaseManager().updateOrdenEstado(sgtEstado,lblID.getText());
+                handler.getDataManager().updateOrdenEstado(sgtEstado,lblID.getText());
                 orden.setEstado(sgtEstado);
                 showOrdenGUI();
             }

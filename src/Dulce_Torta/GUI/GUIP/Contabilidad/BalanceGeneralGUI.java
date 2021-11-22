@@ -1,5 +1,6 @@
 package Dulce_Torta.GUI.GUIP.Contabilidad;
 
+import Dulce_Torta.Actors.Orden;
 import Dulce_Torta.GUI.GUIP.GUIP;
 import Dulce_Torta.Handler;
 
@@ -10,25 +11,32 @@ import java.awt.event.ActionEvent;
 public class BalanceGeneralGUI extends GUIP {
 
     //variables a usar en balance general
-    JButton btnActivos;
-    JButton btnPasivos;
-    JButton btnPatrimonio;
-    JButton btnAtras;
+    private JButton btnActivos;
+    private JButton btnPasivos;
+    private JButton btnPatrimonio;
+    private JButton btnAtras;
 
     //variables a usar en Activos
-    JLabel lblValorInventario;
-    JLabel lblTotalActivos;
-    JButton btnCheck;
-    JTextField txtValorPPE;
-    JButton btnAtrasMenu;//se usa en activos, pasivos y patrimonio
+    private int valorInventario;
+    private int valorTotalActivos;
+    private JLabel lblValorInventario;
+    private JLabel lblTotalActivos;
+    private JButton btnCheck;
+    private JTextField txtValorPPE;
 
     //variables a usar en Pasivos
-    JLabel lblCuentasInsumos;
-    JLabel lblBeneficios;
-    JLabel lblTotalPasivos;
+    private int valorCuentasInsumos;
+    private int valorBeneficiosEmpleados;
+    private int valorTotalPasivos;
+    private JLabel lblCuentasInsumos;
+    private JLabel lblBeneficios;
+    private JLabel lblTotalPasivos;
 
     //variables a usar en Patrimonio
-    JLabel lblPatrimonio;
+    private int valorPatrimonio;
+    private JLabel lblPatrimonio;
+
+    private JButton btnAtrasMenu;//se usa en activos, pasivos y patrimonio
 
     public BalanceGeneralGUI(Handler handler, int width, int height) {
         super(handler, width, height);
@@ -53,6 +61,7 @@ public class BalanceGeneralGUI extends GUIP {
 
         positionX = this.getX();
         positionY = this.getY();
+        valorInventario = 0;
 
         lblBackground.setIcon(new ImageIcon(urlBackground));
         lblBackground.setBounds(positionX, positionY, 1000,500);
@@ -97,8 +106,7 @@ public class BalanceGeneralGUI extends GUIP {
         btnCheck.addActionListener(this);
         btnAtrasMenu.addActionListener(this);
 
-        lblValorInventario.setText("123456789");
-        lblTotalActivos.setText("00000000000");
+        lblValorInventario.setText(String.valueOf(valorInventario));
 
         addToJPanel(lblBackground, lblValorInventario, txtValorPPE, btnCheck, lblTotalActivos, btnAtrasMenu);
 
@@ -107,7 +115,7 @@ public class BalanceGeneralGUI extends GUIP {
 
         lblValorInventario.setFont(new Font("Tahoma", Font.BOLD, 25));
 
-        buttonTransparent(btnCheck, btnAtrasMenu);
+        buttonTransparent(btnAtrasMenu, btnCheck);
     }
 
     public void ShowPasivos(){
@@ -125,9 +133,9 @@ public class BalanceGeneralGUI extends GUIP {
 
         btnAtrasMenu.addActionListener(this);
 
-        lblCuentasInsumos.setText("123456789");
-        lblBeneficios.setText("9876543");
-        lblTotalPasivos.setText("0000000");
+        lblCuentasInsumos.setText(String.valueOf(valorCuentasInsumos));
+        lblBeneficios.setText(String.valueOf(valorBeneficiosEmpleados));
+        lblTotalPasivos.setText(String.valueOf(valorTotalPasivos));
 
         addToJPanel(lblBackground, lblCuentasInsumos, lblBeneficios, lblTotalPasivos, btnAtrasMenu);
 
@@ -150,7 +158,7 @@ public class BalanceGeneralGUI extends GUIP {
 
         btnAtrasMenu.addActionListener(this);
 
-        lblPatrimonio.setText("123456789");
+        lblPatrimonio.setText(String.valueOf(valorPatrimonio));
         lblPatrimonio.setFont(new Font("Tahoma", Font.BOLD,22));
 
         addToJPanel(lblBackground, lblPatrimonio, btnAtrasMenu);
@@ -162,28 +170,92 @@ public class BalanceGeneralGUI extends GUIP {
         lblBackground.setIcon(new ImageIcon(urlBackground));
     }
 
+    public void setValorInventario(){
+        valorInventario = 0;
+        for(Orden orden: handler.getManager().getOrdenes().values()){
+            valorInventario += orden.getValorTotal();
+        }
+    }
+
     @Override
     public boolean isTxtValid(int opc) {
+        try{
+            //condicion activos
+            if(opc == 0){
+                if(txtValorPPE.getText().equals("")){
+                    showDialog(0);
+                    return false;
+                }else{
+                    int i = Integer.parseInt(txtValorPPE.getText());
+                    return true;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            showDialog(1);
+        }
+
         return false;
+    }
+
+    @Override
+    public void showDialog(int opc) {
+        switch (opc) {
+            case 0:
+                String okOpt = "Ok";
+                Object[] options = {okOpt};
+                int n = JOptionPane.showOptionDialog(null,
+                        "Alguno de los campos esta vacio :(",
+                        "Campo vacio",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
+            case 1:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Alguna de la informacion ingresada esta errada",
+                        "Error",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnAtrasMenu){
-            System.out.println("Click btn back al menu balance general");
             removeAll();
             principalGUI();
         }
-        //btnActivos, btnPasivos,btnPatrimonio,
         if(e.getSource() == btnActivos){
+            setValorInventario();
             removeAll();
             ShowActivos();
         }
         if(e.getSource() == btnPasivos){
+            setValorCuentasInsumos();
+            setValorBeneficiosEmpleados();
+            setValorTotalPasivos();
             removeAll();
             ShowPasivos();
         }
+        if(e.getSource() == btnCheck){
+            if(isTxtValid(0)){
+                valorTotalActivos = valorInventario + Integer.parseInt(txtValorPPE.getText());
+                lblTotalActivos.setText(String.valueOf(valorTotalActivos));
+            }
+        }
         if(e.getSource() == btnPatrimonio){
+            setValorPatrimonio();
             removeAll();
             ShowPatrimonio();
         }
@@ -191,4 +263,27 @@ public class BalanceGeneralGUI extends GUIP {
             handler.getContabilidadGUI().actionPerformed(e);
         }
     }
+
+    private void setValorTotalPasivos() {
+        valorTotalPasivos = valorBeneficiosEmpleados + valorCuentasInsumos;
+    }
+
+    private void setValorCuentasInsumos() {
+        handler.getInventario().calcularCostoTotal();
+        valorCuentasInsumos = handler.getInventario().getCostoTotal();
+    }
+
+    private void setValorBeneficiosEmpleados(){
+        handler.getContabilidadGUI().gastosAdmin.setTotal();
+        valorBeneficiosEmpleados = handler.getContabilidadGUI().gastosAdmin.getTotalEmpleados();
+    }
+
+    private void setValorPatrimonio(){
+        valorPatrimonio = valorTotalActivos - valorTotalPasivos;
+    }
+
+    public JButton getBtnAtras(){
+        return btnAtras;
+    }
+
 }

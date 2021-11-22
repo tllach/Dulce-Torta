@@ -6,7 +6,6 @@ import Dulce_Torta.Handler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class ClientesGUI extends GUIP implements ItemListener {
 
@@ -92,7 +91,7 @@ public class ClientesGUI extends GUIP implements ItemListener {
         txtSetBorder(txtIDCliente);
 
         createTable();
-        handler.getBaseManager().addRow(1);
+        handler.getDataManager().addRow(1);
     }
 
     public void createTable() {

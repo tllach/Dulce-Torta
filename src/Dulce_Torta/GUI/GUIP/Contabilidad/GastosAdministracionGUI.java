@@ -115,12 +115,6 @@ public class GastosAdministracionGUI extends GUIP {
 
         changeBackground("src/Dulce_Torta/Assets/Contabilidad/Contabilidad_Gastos de administracion_Nomina.png");
 
-        //(LabelAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, 240, 30));
-        //(LabelPastelero, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 240, 30));
-        //(LabelAyudante, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 260, 210, 30));
-        //(LabelRepartidor, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 220, 30));
-        //(LabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 400, 180, 40));
-        //(LabelBotnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 80, 80));
         lblAdmin.setBounds(positionX + 385, positionY + 125, 240, 30);
         lblPasteleros.setBounds(positionX + 385, positionY + 190, 240, 30);
         lblAyudantes.setBounds(positionX + 385, positionY + 255, 210, 30);

@@ -93,7 +93,7 @@ public class EmpleadosGUI extends GUIP implements ItemListener {
         txtSetBorder(txtIDEmpleado);
 
         createTable();
-        handler.getBaseManager().addRow(2);
+        handler.getDataManager().addRow(2);
     }
 
     public void createTable() {
@@ -384,7 +384,7 @@ public class EmpleadosGUI extends GUIP implements ItemListener {
             showTablaEmpleados();
         }
         if(e.getSource() == btnEliminarEmpleado){
-            handler.getBaseManager().deleteRegistroEmpleado(IdToSearch);
+            handler.getDataManager().deleteRegistroEmpleado(IdToSearch);
             showTablaEmpleados();
         }
     }

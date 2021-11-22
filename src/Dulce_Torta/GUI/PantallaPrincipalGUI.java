@@ -13,7 +13,6 @@ public class PantallaPrincipalGUI extends GUI{
 
     public PantallaPrincipalGUI(Handler handler, int width, int height){
         super(handler, width, height);
-        handler.getManager().setAllRegistros();
     }
 
     @Override
@@ -52,37 +51,37 @@ public class PantallaPrincipalGUI extends GUI{
 
         addToJPanel(btnInicio, btnClientes, btnOrdenes, btnEmpleados, btnContabilidad, btnInventario, btnMiPerfil);
         buttonTransparent(btnInicio, btnClientes, btnOrdenes, btnEmpleados, btnContabilidad, btnInventario, btnMiPerfil);
+
+        handler.getManager().setAllRegistros();
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnInicio){
-            System.out.println("Click Inicio");
             handler.getDisplay().addJpanelToMain(new JLayeredPane());
         }
         if(e.getSource() == btnClientes){
-            System.out.println("Click Clientes");
             handler.getDisplay().addJpanelToMain(handler.getClientesGUI());
         }
         if(e.getSource() == btnOrdenes){
-            System.out.println("Click Orden");
             handler.getDisplay().addJpanelToMain(handler.getOrdenGUI());
         }
         if(e.getSource() == btnEmpleados){
-            System.out.println("Click Empleados");
             handler.getDisplay().addJpanelToMain(handler.getEmpleadosGUI());
         }
         if(e.getSource() == btnContabilidad){
-            System.out.println("Click Contabilidad");
             handler.getDisplay().addJpanelToMain(handler.getContabilidadGUI());
         }
         if(e.getSource() == btnInventario){
-            System.out.println("Click Inventario");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().inventarioGUI);
+            handler.getDisplay().addJpanelToMain(handler.getInventarioGUI());
+            handler.getInventario().setAlmacenado();
+            handler.getInventario().notificarCapacidadMax();
         }
         if(e.getSource() == btnMiPerfil){
             System.out.println("Click Mi Perfil");
+            handler.getMiPerfilGUI().initComponents();
+            handler.getDisplay().addJpanelToMain(handler.getMiPerfilGUI());
         }
     }
 }
