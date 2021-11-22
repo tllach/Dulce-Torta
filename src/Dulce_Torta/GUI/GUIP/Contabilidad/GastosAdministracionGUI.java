@@ -1,5 +1,6 @@
 package Dulce_Torta.GUI.GUIP.Contabilidad;
 
+import Dulce_Torta.Actors.Empleado;
 import Dulce_Torta.GUI.GUIP.GUIP;
 import Dulce_Torta.Handler;
 
@@ -9,40 +10,49 @@ import java.awt.event.ActionEvent;
 
 public class GastosAdministracionGUI extends GUIP {
 
-    JButton btnGastosNomina;
-    JButton btnGastosFijos;
-    JButton btnAtras;
+    private JButton btnGastosNomina;
+    private JButton btnGastosFijos;
+    private JButton btnAtras;
 
     //variables a usar en gastos de nomina
-    JLabel lblAdmin;
-    JLabel lblPasteleros;
-    JLabel lblAyudantes;
-    JLabel lblRepartidores;
-    JLabel lblTotal;
+    private JLabel lblAdmin;
+    private JLabel lblPasteleros;
+    private JLabel lblAyudantes;
+    private JLabel lblRepartidores;
+    private JLabel lblTotal;
+
+    private int totalAdmin;
+    private int totalPasteleros;
+    private int totalAyudantes;
+    private int totalRepartidores;
+    private int totalEmpleados;
+    private int totalGastosFijos;
 
     //variables a usar en gastos fijos
-    JButton btnServiciosP;
-    JButton btnArrendamiento;
-    JButton btnImpuestos;
-
-    JButton btnAtrasMain;
+    private JButton btnServiciosP;
+    private JButton btnArrendamiento;
+    private JButton btnImpuestos;
+    private JButton btnAtrasMain;
 
     //variables a usar en Servicios publicos
-    JTextField txtEnergia;
-    JTextField txtAgua;
-    JButton btnRegistrarS;
+    private JTextField txtEnergia;
+    private JTextField txtAgua;
+    private JButton btnRegistrarS;
+    private boolean isValidS;
 
     //variables a usar en arrendamiento
-    JTextField txtArrendamiento;
-    JButton btnRegistrarA;
+    private JTextField txtArrendamiento;
+    private JButton btnRegistrarA;
+    private boolean isValidA;
 
     //variables a usar en impuestos
-    JTextField txtImpuestoRFuente;
-    JTextField txtImpuestoRICA;
-    JTextField txtImpuestoRenta;
-    JButton btnRegistrarI;
+    private JTextField txtImpuestoRFuente;
+    private JTextField txtImpuestoRICA;
+    private JTextField txtImpuestoRenta;
+    private JButton btnRegistrarI;
+    private boolean isValidI;
 
-    JButton btnAtrasGastoFijosMenu;
+    private JButton btnAtrasGastoFijosMenu;
 
     public GastosAdministracionGUI(Handler handler, int width, int height){
         super(handler, width, height);
@@ -66,6 +76,10 @@ public class GastosAdministracionGUI extends GUIP {
 
         positionX = this.getX();
         positionY = this.getY();
+
+        isValidI = false;
+        isValidS = false;
+        isValidA = false;
 
         lblBackground.setIcon(new ImageIcon(urlBackground));
         lblBackground.setBounds(positionX, positionY, 1000,500);
@@ -101,19 +115,31 @@ public class GastosAdministracionGUI extends GUIP {
 
         changeBackground("src/Dulce_Torta/Assets/Contabilidad/Contabilidad_Gastos de administracion_Nomina.png");
 
-        btnAtrasMain.setBounds(positionX+35, positionY+407, 75, 75);
+        //(LabelAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, 240, 30));
+        //(LabelPastelero, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 240, 30));
+        //(LabelAyudante, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 260, 210, 30));
+        //(LabelRepartidor, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 220, 30));
+        //(LabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 400, 180, 40));
+        //(LabelBotnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 80, 80));
+        lblAdmin.setBounds(positionX + 385, positionY + 125, 240, 30);
+        lblPasteleros.setBounds(positionX + 385, positionY + 190, 240, 30);
+        lblAyudantes.setBounds(positionX + 385, positionY + 255, 210, 30);
+        lblRepartidores.setBounds(positionX + 385, positionY + 325, 220, 30);
+        lblTotal.setBounds(positionX + 370, positionY + 388, 180, 40);
+        btnAtrasMain.setBounds(positionX + 32, positionY + 407, 75, 75);
 
         btnAtrasMain.addActionListener(this);
 
-        lblAdmin.setText("11111111111");
-        lblPasteleros.setText("2222222222");
-        lblAyudantes.setText("33333333333");
-        lblRepartidores.setText("4444444444");
-        lblTotal.setText("55555555");
+        lblAdmin.setText(String.valueOf(totalAdmin));
+        lblPasteleros.setText(String.valueOf(totalPasteleros));
+        lblAyudantes.setText(String.valueOf(totalAyudantes));
+        lblRepartidores.setText(String.valueOf(totalRepartidores));
+        lblTotal.setText(String.valueOf(totalEmpleados));
+
 
         addToJPanel(lblBackground, lblAdmin, lblPasteleros, lblAyudantes, lblRepartidores, lblTotal, btnAtrasMain);
 
-        lblTotal.setFont(new Font("Verdana", Font.BOLD, 20));
+        lblTotal.setFont(new Font("Verdana", Font.BOLD, 25));
         lblTotal.setForeground(new Color(0, 128, 255));
 
         setFontLbl(lblAdmin, lblPasteleros, lblAyudantes, lblRepartidores);
@@ -214,57 +240,200 @@ public class GastosAdministracionGUI extends GUIP {
         lblBackground.setIcon(new ImageIcon(urlBackground));
     }
 
-    @Override
-    public boolean isTxtValid(int opc) {
-        return false;
+    public void setTotal() {
+        totalAdmin = 0;
+        totalPasteleros = 0;
+        totalAyudantes = 0;
+        totalRepartidores = 0;
+        for(Empleado empleado: handler.getManager().getEmpleados().values()){
+            if(empleado.getTipoEmpleado().equals("Administrador")){
+                totalAdmin += empleado.getSueldo();
+            }
+            if(empleado.getTipoEmpleado().equals("Pastelerx")){
+                totalPasteleros += empleado.getSueldo();
+            }
+            if(empleado.getTipoEmpleado().equals("Ayudante")){
+                totalAyudantes += empleado.getSueldo();
+            }
+            if(empleado.getTipoEmpleado().equals("Repartidor(a)")){
+                totalRepartidores += empleado.getSueldo();
+            }
+        }
+        this.totalEmpleados = totalAdmin + totalPasteleros + totalAyudantes + totalRepartidores;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public boolean isTxtValid(int opc) {
+        try {
+            if (opc == 0) {
+                //check if is empty
+                if (txtEnergia.getText().equals("") || txtAgua.getText().equals("")) {
+                    showDialog(1);
+                    return false;
+                } else {
+                    //check that txts has numbers
+                    int i = Integer.parseInt(txtEnergia.getText()) + 1;
+                    i = Integer.parseInt(txtAgua.getText()) + 1;
+                }
+                return true;
+            }
+            if (opc == 1) {
+                if (txtArrendamiento.getText().equals("")) {
+                    showDialog(1);
+                    return false;
+                } else {
+                    int i = Integer.parseInt(txtArrendamiento.getText()) + 1;
+                }
+                return true;
+            }
+            if (opc == 2) {
+                if(txtImpuestoRFuente.getText().equals("") || txtImpuestoRICA.getText().equals("") || txtImpuestoRenta.getText().equals("")){
+                    showDialog(1);
+                    return false;
+                }else{
+                    int i = Integer.parseInt(txtImpuestoRFuente.getText()) + 1;
+                    i = Integer.parseInt(txtImpuestoRICA.getText()) + 1;
+                    i = Integer.parseInt(txtImpuestoRenta.getText()) + 1;
+                }
+                return true;
+            }
+        }catch(Exception e) {
+            showDialog(2);
+            return false;
+        }
+        return false;
+    }
+
+    public void showDialog(int opc) {
+        switch (opc) {
+            case 1:
+                String okOpt = "Ok";
+                Object[] options = {okOpt};
+                int n = JOptionPane.showOptionDialog(null,
+                        "Alguno de los campos esta vacio :(",
+                        "Campo vacio",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
+            case 2:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Alguna de la informacion ingresada esta errada o\nla informacion no ha sido registrada",
+                        "Error",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
+            case 4:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "La informacion se registro correctamente",
+                        "Información registrada",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e){
         if(e.getSource() == btnGastosNomina){
-            System.out.println("click bnt Gasto Nomina");
+            setTotal();
             removeAll();
             ShowGastosNomina();
         }
-
         if(e.getSource() == btnGastosFijos){
-            System.out.println("Click btn Gastos fijos");
             removeAll();
             ShowGastosFijos();
         }
-
         if(e.getSource()== btnServiciosP){
-            System.out.println("Click btn servicios p");
             removeAll();
             ShowServiciosPublicos();
         }
-
         if(e.getSource()== btnArrendamiento){
-            System.out.println("Click btn arrendamiento");
             removeAll();
             ShowArrendamiento();
         }
-
         if(e.getSource()== btnImpuestos){
-            System.out.println("click btn Impuestos");
             removeAll();
             ShowImpuestos();
         }
-
+        if(e.getSource() == btnRegistrarS){
+            if (isTxtValid(0)) {
+                isValidS = true;
+                showDialog(4);
+                btnAtrasGastoFijosMenu.doClick();
+            }
+        }
+        if(e.getSource() == btnRegistrarA){
+            if (isTxtValid(1)) {
+                isValidA = true;
+                showDialog(4);
+                btnAtrasGastoFijosMenu.doClick();
+            }
+        }
+        if(e.getSource() == btnRegistrarI){
+            if (isTxtValid(2)) {
+                isValidI = true;
+                showDialog(4);
+                btnAtrasGastoFijosMenu.doClick();
+            }
+        }
         if(e.getSource() == btnAtrasGastoFijosMenu){
-            System.out.println("Click btn atras para ir a gastos menu");
+            //servicios publicos
+            if(isValidS){
+                totalGastosFijos += Integer.parseInt(txtEnergia.getText())
+                                    + Integer.parseInt(txtAgua.getText());
+            }else{
+                //arrendamiento
+                if(isValidA){
+                    totalGastosFijos += Integer.parseInt(txtArrendamiento.getText());
+                }else{
+                    //impuestos
+                    if(isValidI){
+                        totalGastosFijos += Integer.parseInt(txtImpuestoRFuente.getText())
+                                + Integer.parseInt(txtImpuestoRICA.getText())
+                                + Integer.parseInt(txtImpuestoRenta.getText());
+                    }else{
+                        showDialog(2);
+                        return;
+                    }
+                }
+            }
             removeAll();
             ShowGastosFijos();
         }
-
         if(e.getSource() == btnAtrasMain){
-            System.out.println("click btn atras al menu principal gastos administracion");
             removeAll();
             principalGUI();
         }
-
         if(e.getSource() == btnAtras){
             handler.getContabilidadGUI().actionPerformed(e);
         }
     }
+
+    public int getTotalEmpleados() {
+        return this.totalEmpleados;
+    }
+
+    public JButton getBtnAtras() {
+        return this.btnAtras;
+    }
+
+    public int getTotalGastosFijos() {
+        return this.totalGastosFijos;
+    }
+
 }

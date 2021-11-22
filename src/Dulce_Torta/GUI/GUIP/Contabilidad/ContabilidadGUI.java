@@ -17,6 +17,9 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
     GastosAdministracionGUI gastosAdmin;
     BalanceGeneralGUI balanceGeneral;
 
+    int totalSueldoEmpleado;
+    int totalGastosFijos;
+
     public ContabilidadGUI(Handler handler, int width, int height) {
         super(handler, width, height);
     }
@@ -83,8 +86,14 @@ public class ContabilidadGUI extends GUIP implements ItemListener {
             System.out.println("Click Show Balance General Btn");
             ShowBalanceGeneral();
         }
-        if(e.getSource() == gastosAdmin.btnAtras || e.getSource() == balanceGeneral.btnAtras){
+        if(e.getSource() == gastosAdmin.getBtnAtras()){
             System.out.println("Click btn Atras para volver a la pagina principal");
+            totalGastosFijos = gastosAdmin.getTotalGastosFijos();
+            totalSueldoEmpleado = gastosAdmin.getTotalEmpleados();
+            removeAll();
+            principalGUI();
+        }
+        if(e.getSource() == balanceGeneral.btnAtras){
             removeAll();
             principalGUI();
         }

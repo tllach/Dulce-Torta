@@ -73,4 +73,16 @@ public class Manager{
     public int getCountCliente(){
         return countCliente;
     }
+
+    public HashMap<Integer, Cliente> getClientes() {
+        return Clientes;
+    }
+
+    public HashMap<Integer, Orden> getOrdenes() {
+        return Ordenes;
+    }
+
+    public HashMap<Integer, Empleado> getEmpleados() {
+        return Empleados;
+    }
 }

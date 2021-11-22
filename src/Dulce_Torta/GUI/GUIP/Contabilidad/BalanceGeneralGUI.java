@@ -174,9 +174,6 @@ public class BalanceGeneralGUI extends GUIP {
             removeAll();
             principalGUI();
         }
-        if(e.getSource() == btnAtras){
-            handler.getContabilidadGUI().actionPerformed(e);
-        }
         //btnActivos, btnPasivos,btnPatrimonio,
         if(e.getSource() == btnActivos){
             removeAll();
@@ -189,6 +186,9 @@ public class BalanceGeneralGUI extends GUIP {
         if(e.getSource() == btnPatrimonio){
             removeAll();
             ShowPatrimonio();
+        }
+        if(e.getSource() == btnAtras){
+            handler.getContabilidadGUI().actionPerformed(e);
         }
     }
 }
