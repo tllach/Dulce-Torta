@@ -13,7 +13,6 @@ public class PantallaPrincipalGUI extends GUI{
 
     public PantallaPrincipalGUI(Handler handler, int width, int height){
         super(handler, width, height);
-        handler.getManager().setAllRegistros();
     }
 
     @Override
@@ -53,37 +52,43 @@ public class PantallaPrincipalGUI extends GUI{
         addToJPanel(btnInicio, btnClientes, btnOrdenes, btnEmpleados, btnContabilidad, btnInventario, btnMiPerfil);
         buttonTransparent(btnInicio, btnClientes, btnOrdenes, btnEmpleados, btnContabilidad, btnInventario, btnMiPerfil);
 
+        handler.getManager().setAllRegistros();
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnInicio){
-            System.out.println("Click Inicio");
             handler.getDisplay().addJpanelToMain(new JLayeredPane());
         }
-        if(e.getSource() == btnClientes){
-            System.out.println("Click Clientes");
+        if(e.getSource() == btnClientes && !handler.getDisplay().cargoLogeado.equals("Repartidor(a)")){
             handler.getDisplay().addJpanelToMain(handler.getClientesGUI());
+        } else if (e.getSource() == btnClientes) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
         if(e.getSource() == btnOrdenes){
-            System.out.println("Click Orden");
             handler.getDisplay().addJpanelToMain(handler.getOrdenGUI());
         }
-        if(e.getSource() == btnEmpleados){
-            System.out.println("Click Empleados");
+        if(e.getSource() == btnEmpleados && !handler.getDisplay().cargoLogeado.equals("Repartidor(a)")){
             handler.getDisplay().addJpanelToMain(handler.getEmpleadosGUI());
+        }else if (e.getSource() == btnEmpleados) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
-        if(e.getSource() == btnContabilidad){
-            System.out.println("Click Contabilidad");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().contabilidadGUI);
+        if(e.getSource() == btnContabilidad && handler.getDisplay().cargoLogeado.equals("Administrador")){
+            handler.getDisplay().addJpanelToMain(handler.getContabilidadGUI());
+        }else if (e.getSource() == btnContabilidad) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
-        if(e.getSource() == btnInventario){
-            System.out.println("Click Inventario");
-            handler.getDisplay().addJpanelToMain(handler.getDisplay().inventarioGUI);
+        if(e.getSource() == btnInventario && !handler.getDisplay().cargoLogeado.equals("Repartidor(a)")){
+            handler.getDisplay().addJpanelToMain(handler.getInventarioGUI());
+            handler.getInventario().setAlmacenado();
+            handler.getInventario().notificarCapacidadMax();
+        }else if (e.getSource() == btnInventario) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
         if(e.getSource() == btnMiPerfil){
-            System.out.println("Click Mi Perfil");
+            handler.getMiPerfilGUI().initComponents();
+            handler.getDisplay().addJpanelToMain(handler.getMiPerfilGUI());
         }
     }
 }

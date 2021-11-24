@@ -6,7 +6,6 @@ import Dulce_Torta.Handler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class ClientesGUI extends GUIP implements ItemListener {
 
@@ -92,7 +91,7 @@ public class ClientesGUI extends GUIP implements ItemListener {
         txtSetBorder(txtIDCliente);
 
         createTable();
-        handler.getBaseManager().addRow(1);
+        handler.getDataManager().addRow(1);
     }
 
     public void createTable() {
@@ -178,12 +177,11 @@ public class ClientesGUI extends GUIP implements ItemListener {
         btnAggCliente.addActionListener(this);
 
         add(tipoDocBox, 0);
-        addToJPanel(lblBackground, txtNombre,  txtApellidos,
-                    txtNroDocumento, txtCelular, txtDireccion,
-                    txtCorreo, btnAtrasCliente, btnAggCliente);
+        addToJPanel(lblBackground, txtNombre,  txtApellidos,txtNroDocumento,
+                txtCelular, txtDireccion,txtCorreo, btnAtrasCliente, btnAggCliente);
         buttonTransparent(btnAtrasCliente, btnAggCliente);
-        txtSetBorder(txtNombre, txtApellidos, txtNroDocumento,
-                        txtCelular, txtDireccion, txtCorreo);
+        txtSetBorder(txtNombre, txtApellidos, txtNroDocumento, txtCelular,
+                txtDireccion, txtCorreo);
     }
 
     private void showUnClienteGUI(){
@@ -228,13 +226,11 @@ public class ClientesGUI extends GUIP implements ItemListener {
         lblDireccion.setText(cliente.getDireccion());
         lblCorreo.setText(cliente.getCorreo());
 
-        addToJPanel(lblBackground, lblID, lblNombre, lblApellidos,
-                    lblTipoIdentidad, lblNroDoc, lblCelular,
-                    lblDireccion, lblCorreo, btnAtrasCliente2);
+        addToJPanel(lblBackground, lblID, lblNombre, lblApellidos, lblTipoIdentidad,
+                lblNroDoc, lblCelular, lblDireccion, lblCorreo, btnAtrasCliente2);
         buttonTransparent(btnAtrasCliente2);
-        setFontLbl(lblID, lblNombre, lblApellidos,
-                    lblTipoIdentidad, lblNroDoc, lblCelular,
-                    lblDireccion, lblCorreo);
+        setFontLbl(lblID, lblNombre, lblApellidos,lblTipoIdentidad, lblNroDoc,
+                lblCelular, lblDireccion, lblCorreo);
     }
 
     private void changeBackground(String url){

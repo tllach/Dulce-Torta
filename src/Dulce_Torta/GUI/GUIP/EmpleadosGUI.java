@@ -93,7 +93,7 @@ public class EmpleadosGUI extends GUIP implements ItemListener {
         txtSetBorder(txtIDEmpleado);
 
         createTable();
-        handler.getBaseManager().addRow(2);
+        handler.getDataManager().addRow(2);
     }
 
     public void createTable() {
@@ -196,7 +196,7 @@ public class EmpleadosGUI extends GUIP implements ItemListener {
         System.out.println("Show cliente entre");
 
         //declaracion variables
-        String imgUrl[] = {"src/Dulce_Torta/Assets/Empleados/Nicolas.jpg","src/Dulce_Torta/Assets/Empleados/Julian.jpg", "src/Dulce_Torta/Assets/Empleados/Liceth.jpg", "src/Dulce_Torta/Assets/Empleados/Jimeno.jpg", "src/Dulce_Torta/Assets/Empleados/Kathy.jpg", "src/Dulce_Torta/Assets/Empleados/Tabata.jpg", "src/Dulce_Torta/Assets/Empleados/Kathy.jpg"};
+        String imgUrl[] = {"src/Dulce_Torta/Assets/Empleados/Nicolas.jpg","src/Dulce_Torta/Assets/Empleados/Julian.jpg", "src/Dulce_Torta/Assets/Empleados/Liceth.jpg", "src/Dulce_Torta/Assets/Empleados/Jimeno.jpg", "src/Dulce_Torta/Assets/Empleados/Kathy.jpg", "src/Dulce_Torta/Assets/Empleados/Tabata.jpg", "src/Dulce_Torta/Assets/Empleados/Kathy.jpg", "src/Dulce_Torta/Assets/Empleados/Tabata.jpg", "src/Dulce_Torta/Assets/Empleados/Kathy.jpg", "src/Dulce_Torta/Assets/Empleados/Tabata.jpg","src/Dulce_Torta/Assets/Empleados/Kathy.jpg", "src/Dulce_Torta/Assets/Empleados/Tabata.jpg"};
         lblImgEmpleado = new JLabel();
         lblID = new JLabel();
         lblNombre = new JLabel();
@@ -383,9 +383,11 @@ public class EmpleadosGUI extends GUIP implements ItemListener {
         if(e.getSource() == btnAtrasVisualizarEmpleado) {
             showTablaEmpleados();
         }
-        if(e.getSource() == btnEliminarEmpleado){
-            handler.getBaseManager().deleteRegistroEmpleado(IdToSearch);
+        if(e.getSource() == btnEliminarEmpleado && !(handler.getDisplay().cargoLogeado.equals("Pastelerx") || handler.getDisplay().cargoLogeado.equals("Ayudante"))){
+            handler.getDataManager().deleteRegistroEmpleado(IdToSearch);
             showTablaEmpleados();
+        }else if (e.getSource() == btnEliminarEmpleado) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
     }
 

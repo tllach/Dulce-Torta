@@ -1,9 +1,10 @@
 package Dulce_Torta;
 
-import Dulce_Torta.Actors.Enums.TipoDocumento;
+import Dulce_Torta.Actors.Inventario;
 import Dulce_Torta.Databases.DataBaseManager;
 import Dulce_Torta.GUI.*;
 import Dulce_Torta.GUI.GUIP.*;
+import Dulce_Torta.GUI.GUIP.Contabilidad.ContabilidadGUI;
 import Dulce_Torta.GUI.RestablecerContraseña.RestablecerCntaGUI;
 
 public class Handler {
@@ -18,7 +19,7 @@ public class Handler {
         return display;
     }
 
-    public DataBaseManager getBaseManager() { return display.dataBaseManager; }
+    public DataBaseManager getDataManager() { return display.dataBaseManager; }
 
     public PantallaPrincipalGUI getPrincipalGUI() { return display.pantallaPrincipalGUI;}
 
@@ -34,7 +35,17 @@ public class Handler {
 
     public RestablecerCntaGUI getRestablecerCntaGUI(){ return display.restablecerCntaGUI;}
 
-    public TipoDocumento getTipoDocumento(){
-       return display.tipoDoc;
+    public ContabilidadGUI getContabilidadGUI(){ return display.contabilidadGUI;}
+
+    public InventarioGUI getInventarioGUI() {
+        return display.inventarioGUI;
+    }
+
+    public Inventario getInventario(){
+        return display.inventario;
+    }
+
+    public MiPerfilGUI getMiPerfilGUI() {
+        return display.miPerfilGUI;
     }
 }

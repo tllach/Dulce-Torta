@@ -15,6 +15,9 @@ public class InicioSesionGUI extends GUI{
     String bgPrincipal;
     String bgRestablecerC;
 
+    long IDLogin;
+    String cargoLogin;
+
     public InicioSesionGUI(Handler handler, int width, int height){
         super(handler, width, height);
     }
@@ -62,7 +65,7 @@ public class InicioSesionGUI extends GUI{
                 showDialog(0);
                 return false;
             }else{
-                return handler.getBaseManager().canIniciarSesion(Long.parseLong(txtUsuario.getText()), contrasena.toString());
+                return handler.getDataManager().canIniciarSesion(Long.parseLong(txtUsuario.getText()), contrasena.toString());
             }
         }catch(Exception e){
             showDialog(0);
@@ -112,8 +115,37 @@ public class InicioSesionGUI extends GUI{
                         options,
                         okOpt
                 );
-            break;
+                break;
+            case 3:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Su Perfil no le permite acceder",
+                        "ACCESO DENEGADO",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
         }
+    }
+
+    public void setCargoLogin(String cargo){
+        this.cargoLogin = cargo;
+    }
+
+    public String getCargoLogin(){
+        return cargoLogin;
+    }
+
+    public void setIDLogin(long id){
+        this.IDLogin = id;
+    }
+
+    public long getIDLogin() {
+        return IDLogin;
     }
 
     @Override
@@ -123,16 +155,14 @@ public class InicioSesionGUI extends GUI{
             handler.getDisplay().changeBackGroundPanel(bgRestablecerC);
         }
         if(e.getSource() == btnInicioSesion){
-            /**
-            if(isTxtValid()){
+            if(isTxtValid(0)){
+                handler.getDisplay().setIDLogeado(getIDLogin());
+                handler.getDisplay().setCargoLogeado(getCargoLogin());
+                txtUsuario.setText("");
+                txtCtr.setText("");
                 handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel, handler.getDisplay().pantallaPrincipalGUI);
                 handler.getDisplay().changeBackGroundPanel(bgPrincipal);
-            }else{
-
             }
-            **/
-            handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel, handler.getDisplay().pantallaPrincipalGUI);
-            handler.getDisplay().changeBackGroundPanel(bgPrincipal);
         }
     }
 }
