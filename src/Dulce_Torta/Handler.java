@@ -7,9 +7,6 @@ import Dulce_Torta.GUI.GUIP.*;
 import Dulce_Torta.GUI.GUIP.Contabilidad.ContabilidadGUI;
 import Dulce_Torta.GUI.RestablecerContraseña.RestablecerCntaGUI;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
 public class Handler {
 
     private Display display;

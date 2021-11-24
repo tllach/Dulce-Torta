@@ -9,7 +9,6 @@ public class Producto{
     private ArrayList<Insumo> Insumos;
 
     public Producto(int ID, String nombre){
-        System.out.println("producto creado");
         this.ID = ID;
         this.nombre = nombre;
     }

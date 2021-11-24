@@ -61,25 +61,32 @@ public class PantallaPrincipalGUI extends GUI{
         if(e.getSource() == btnInicio){
             handler.getDisplay().addJpanelToMain(new JLayeredPane());
         }
-        if(e.getSource() == btnClientes){
+        if(e.getSource() == btnClientes && !handler.getDisplay().cargoLogeado.equals("Repartidor(a)")){
             handler.getDisplay().addJpanelToMain(handler.getClientesGUI());
+        } else if (e.getSource() == btnClientes) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
         if(e.getSource() == btnOrdenes){
             handler.getDisplay().addJpanelToMain(handler.getOrdenGUI());
         }
-        if(e.getSource() == btnEmpleados){
+        if(e.getSource() == btnEmpleados && !handler.getDisplay().cargoLogeado.equals("Repartidor(a)")){
             handler.getDisplay().addJpanelToMain(handler.getEmpleadosGUI());
+        }else if (e.getSource() == btnEmpleados) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
-        if(e.getSource() == btnContabilidad){
+        if(e.getSource() == btnContabilidad && handler.getDisplay().cargoLogeado.equals("Administrador")){
             handler.getDisplay().addJpanelToMain(handler.getContabilidadGUI());
+        }else if (e.getSource() == btnContabilidad) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
-        if(e.getSource() == btnInventario){
+        if(e.getSource() == btnInventario && !handler.getDisplay().cargoLogeado.equals("Repartidor(a)")){
             handler.getDisplay().addJpanelToMain(handler.getInventarioGUI());
             handler.getInventario().setAlmacenado();
             handler.getInventario().notificarCapacidadMax();
+        }else if (e.getSource() == btnInventario) {
+            handler.getInicioSesionGUI().showDialog(3);
         }
         if(e.getSource() == btnMiPerfil){
-            System.out.println("Click Mi Perfil");
             handler.getMiPerfilGUI().initComponents();
             handler.getDisplay().addJpanelToMain(handler.getMiPerfilGUI());
         }

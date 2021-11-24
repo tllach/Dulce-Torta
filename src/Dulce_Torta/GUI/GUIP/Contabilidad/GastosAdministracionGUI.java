@@ -105,7 +105,6 @@ public class GastosAdministracionGUI extends GUIP {
 
     //Gastos Nomina
     public void ShowGastosNomina(){
-
         lblAdmin = new JLabel();
         lblPasteleros  = new JLabel();
         lblAyudantes = new JLabel();
@@ -142,6 +141,7 @@ public class GastosAdministracionGUI extends GUIP {
 
     //Gastos Fijos
     public void ShowGastosFijos(){
+        totalGastosFijos = 0;
         btnServiciosP = new JButton();
         btnArrendamiento = new JButton();
         btnImpuestos = new JButton();
@@ -211,7 +211,7 @@ public class GastosAdministracionGUI extends GUIP {
         btnRegistrarI= new JButton();
         btnAtrasGastoFijosMenu = new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Impuestos2.png");
+        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Impuestos.png");
 
         txtImpuestoRFuente.setBounds(positionX+325, positionY+132, 150, 40);
         txtImpuestoRICA.setBounds(positionX+325, positionY+307, 150, 40);
@@ -388,18 +388,24 @@ public class GastosAdministracionGUI extends GUIP {
         if(e.getSource() == btnAtrasGastoFijosMenu){
             //servicios publicos
             if(isValidS){
+                System.out.println(totalGastosFijos);
                 totalGastosFijos += Integer.parseInt(txtEnergia.getText())
                                     + Integer.parseInt(txtAgua.getText());
+                System.out.println(totalGastosFijos);
             }else{
                 //arrendamiento
                 if(isValidA){
+                    System.out.println(totalGastosFijos);
                     totalGastosFijos += Integer.parseInt(txtArrendamiento.getText());
+                    System.out.println(totalGastosFijos);
                 }else{
                     //impuestos
                     if(isValidI){
+                        System.out.println(totalGastosFijos);
                         totalGastosFijos += Integer.parseInt(txtImpuestoRFuente.getText())
                                 + Integer.parseInt(txtImpuestoRICA.getText())
                                 + Integer.parseInt(txtImpuestoRenta.getText());
+                        System.out.println(totalGastosFijos);
                     }else{
                         showDialog(2);
                         return;

@@ -21,8 +21,8 @@ public class BalanceGeneralGUI extends GUIP {
     private int valorTotalActivos;
     private JLabel lblValorInventario;
     private JLabel lblTotalActivos;
-    private JButton btnCheck;
-    private JTextField txtValorPPE;
+    private JLabel lblValorPPE;
+    private int valorPPE;
 
     //variables a usar en Pasivos
     private int valorCuentasInsumos;
@@ -88,34 +88,38 @@ public class BalanceGeneralGUI extends GUIP {
     }
 
     public void ShowActivos(){
+        valorPPE = 15000000;
+
         lblValorInventario = new JLabel();
-        txtValorPPE= new JTextField();
-        btnCheck= new JButton();
+        lblValorPPE = new JLabel();
         lblTotalActivos = new JLabel();
         btnAtrasMenu = new JButton();
 
-        changeBackground("src/Dulce_Torta/Assets/Contabilidad/Activos.png");
+        valorTotalActivos = valorInventario + valorPPE;
+        lblTotalActivos.setText(String.valueOf(valorTotalActivos));
+
+        urlBackground = "src/Dulce_Torta/Assets/Contabilidad/Activos2.png";
+        lblBackground.setIcon(new ImageIcon(urlBackground));
 
         lblValorInventario.setBounds(positionX + 515, positionY + 90, 200, 70);
-        txtValorPPE.setBounds(positionX+515, positionY+215, 280, 70);
-        btnCheck.setBounds(positionX+820, positionY+220, 60, 60);
+        lblValorPPE.setBounds(positionX+515, positionY+215, 280, 70);
         lblTotalActivos.setBounds(positionX + 515, positionY + 339, 200, 70);
         btnAtrasMenu.setBounds(positionX+35, positionY+407, 70, 70);
 
-        txtValorPPE.addActionListener(this);
-        btnCheck.addActionListener(this);
         btnAtrasMenu.addActionListener(this);
 
         lblValorInventario.setText(String.valueOf(valorInventario));
+        lblValorPPE.setText(String.valueOf(valorPPE));
 
-        addToJPanel(lblBackground, lblValorInventario, txtValorPPE, btnCheck, lblTotalActivos, btnAtrasMenu);
+        addToJPanel(lblBackground, lblValorInventario, lblValorPPE, lblTotalActivos, btnAtrasMenu);
 
         lblTotalActivos.setFont(new Font("Tahoma", Font.BOLD, 25));
         lblTotalActivos.setForeground(new Color(127, 189, 70));
 
+        lblValorPPE.setFont(new Font("Tahoma", Font.BOLD, 25));
         lblValorInventario.setFont(new Font("Tahoma", Font.BOLD, 25));
 
-        buttonTransparent(btnAtrasMenu, btnCheck);
+        buttonTransparent(btnAtrasMenu);
     }
 
     public void ShowPasivos(){
@@ -182,11 +186,11 @@ public class BalanceGeneralGUI extends GUIP {
         try{
             //condicion activos
             if(opc == 0){
-                if(txtValorPPE.getText().equals("")){
+                if(lblValorPPE.getText().equals("")){
                     showDialog(0);
                     return false;
                 }else{
-                    int i = Integer.parseInt(txtValorPPE.getText());
+                    int i = Integer.parseInt(lblValorPPE.getText());
                     return true;
                 }
             }
@@ -248,12 +252,6 @@ public class BalanceGeneralGUI extends GUIP {
             removeAll();
             ShowPasivos();
         }
-        if(e.getSource() == btnCheck){
-            if(isTxtValid(0)){
-                valorTotalActivos = valorInventario + Integer.parseInt(txtValorPPE.getText());
-                lblTotalActivos.setText(String.valueOf(valorTotalActivos));
-            }
-        }
         if(e.getSource() == btnPatrimonio){
             setValorPatrimonio();
             removeAll();
@@ -270,7 +268,7 @@ public class BalanceGeneralGUI extends GUIP {
 
     private void setValorCuentasInsumos() {
         handler.getInventario().calcularCostoTotal();
-        valorCuentasInsumos = handler.getInventario().getCostoTotal();
+        valorCuentasInsumos = handler.getInventario().getCostoTotal() + handler.getContabilidadGUI().totalGastosFijos;
     }
 
     private void setValorBeneficiosEmpleados(){

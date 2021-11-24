@@ -115,7 +115,20 @@ public class InicioSesionGUI extends GUI{
                         options,
                         okOpt
                 );
-            break;
+                break;
+            case 3:
+                okOpt = "Ok";
+                options = new Object[]{okOpt};
+                n = JOptionPane.showOptionDialog(null,
+                        "Su Perfil no le permite acceder",
+                        "ACCESO DENEGADO",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        options,
+                        okOpt
+                );
+                break;
         }
     }
 
@@ -150,8 +163,6 @@ public class InicioSesionGUI extends GUI{
                 handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel, handler.getDisplay().pantallaPrincipalGUI);
                 handler.getDisplay().changeBackGroundPanel(bgPrincipal);
             }
-            //handler.getDisplay().changeJPanel(handler.getDisplay().lastJPanel, handler.getDisplay().pantallaPrincipalGUI);
-            //handler.getDisplay().changeBackGroundPanel(bgPrincipal);
         }
     }
 }
